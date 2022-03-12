@@ -40,6 +40,7 @@ namespace Network
             // running in server mode
             if (Application.isBatchMode || emulateServer)
             {
+                Application.targetFrameRate = 60;
                 Debug.Log("running server mode:");
 
 #if !UNITY_EDITOR

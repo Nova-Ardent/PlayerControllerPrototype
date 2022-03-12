@@ -46,6 +46,9 @@ namespace Network
         private void OnDestroy()
         {
             inbound.Abort();
+
+            connecting?.Stop();
+            ping?.Stop();
         }
 
         public void Update()
@@ -83,6 +86,8 @@ namespace Network
                         client = new UdpClient();
                         client.Connect(endpoint);
                         connected = true;
+
+                        Debug.Log($"connected to {endpoint}");
                     }
 
                     Packet data = new Packet(client.Receive(ref endpoint));

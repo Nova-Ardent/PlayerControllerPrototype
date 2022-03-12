@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emulateServer: 0
-  clientAddressValue: 127.0.0.1
+  clientAddressValue: 24.159.150.67
   serverAddressValue: 127.0.0.1
   clientPort: 6969
 --- !u!4 &1494954657
