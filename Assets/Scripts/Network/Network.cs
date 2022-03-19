@@ -10,8 +10,8 @@ namespace Network
     public class Network : MonoBehaviour
     {
         private static Network _instance;
-        public static Network Instance 
-        { 
+        public static Network Instance
+        {
             get => _instance;
             private set
             {
@@ -23,6 +23,8 @@ namespace Network
             }
         }
 
+        public bool active;
+        public bool isServer = false;
         public bool emulateServer = false;
         public string clientAddressValue = "127.0.0.1";
         public string serverAddressValue = "127.0.0.1";
@@ -40,8 +42,21 @@ namespace Network
             // running in server mode
             if (Application.isBatchMode || emulateServer)
             {
-                Application.targetFrameRate = 60;
-                Debug.Log("running server mode:");
+                StartServer();
+            }
+            // running in client mode
+            else
+            {
+                StartClient();
+            }
+            active = true;
+
+        }
+
+        private void StartServer()
+        {
+            Application.targetFrameRate = 60;
+            Debug.Log("running server mode:");
 
 #if !UNITY_EDITOR
 
@@ -56,15 +71,57 @@ namespace Network
                 }
 #endif
 
-                clientAddresss = IPAddress.Parse(serverAddressValue);
-                server = this.gameObject.AddComponent<Server>();
-            }
-            // running in client mode
-            else
+            clientAddresss = IPAddress.Parse(serverAddressValue);
+            server = this.gameObject.AddComponent<Server>();
+            isServer = true;
+        }
+
+        private void StartClient()
+        {
+            if (SteamManager.Initialized)
             {
-                Debug.Log("running client mode:");
+                Debug.Log($"running client mode:\nUser: {Steamworks.SteamFriends.GetPersonaName()} \nID: {Steamworks.SteamUser.GetSteamID()}");
+
                 clientAddresss = IPAddress.Parse(clientAddressValue);
                 client = this.gameObject.AddComponent<Client>();
+                isServer = false;
+                return;
+            }
+
+            Debug.LogError("You are not logged into steam.");
+        }
+
+        public void RegisterListener(Packet.OPCodes oPCode, Action<Packet> action)
+        {
+            if (!active)
+            {
+                Debug.LogError("attempting to register callback before active.");
+            }
+            
+            if (isServer)
+            {
+                server.Callbacks[oPCode] += action;
+            }
+            else
+            {
+                client.Callbacks[oPCode] += action;
+            }
+        }
+
+        public void UnregisterListener(Packet.OPCodes oPCode, Action<Packet> action)
+        {
+            if (!active)
+            {
+                Debug.LogError("attempting to register callback before active.");
+            }
+
+            if (isServer)
+            {
+                server.Callbacks[oPCode] -= action;
+            }
+            else
+            {
+                client.Callbacks[oPCode] -= action;
             }
         }
 

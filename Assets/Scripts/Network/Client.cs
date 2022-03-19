@@ -24,6 +24,8 @@ namespace Network
         System.Timers.Timer connecting;
         System.Timers.Timer ping;
 
+        public Dictionary<Packet.OPCodes, Action<Packet>> Callbacks = new Dictionary<Packet.OPCodes, Action<Packet>>();
+
         void Start()
         {
             endpoint = new IPEndPoint(Network.Instance.clientAddresss, Network.Instance.clientPort);
@@ -41,6 +43,11 @@ namespace Network
             });
             connecting.Interval = 500;
             connecting.Enabled = true;
+
+            foreach (var opCode in Utilities.GetEnums(typeof(Packet.OPCodes)).Cast<Packet.OPCodes>())
+            {
+                Callbacks[opCode] = (x) => { };
+            }
         }
 
         private void OnDestroy()

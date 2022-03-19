@@ -17,6 +17,8 @@ namespace Network
         public List<IPEndPoint> connections;
         public Queue<Action> queue = new Queue<Action>();
 
+        public Dictionary<Packet.OPCodes, Action<Packet>> Callbacks = new Dictionary<Packet.OPCodes, Action<Packet>>();
+
         private void Start()
         {
             connections = new List<IPEndPoint>();
@@ -25,6 +27,10 @@ namespace Network
             inbound.Start();
 
             Debug.Log($"listening to: {client} {Network.Instance.clientPort}");
+            foreach (var opCode in Utilities.GetEnums(typeof(Packet.OPCodes)).Cast<Packet.OPCodes>())
+            {
+                Callbacks[opCode] = (x) => { };
+            }
         }
 
         private void OnDestroy()

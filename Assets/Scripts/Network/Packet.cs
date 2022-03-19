@@ -1,7 +1,6 @@
-
 namespace Network
 {
-    public class Packet
+    public struct Packet
     {
         public const long NetworkFlagLength = 1;
 
@@ -23,6 +22,7 @@ namespace Network
 
         public Packet(OPCodes code)
         {
+            this.readIndex = 0;
             this.data = new byte[]
             {
                 (byte)code
