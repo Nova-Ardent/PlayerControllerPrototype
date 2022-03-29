@@ -9,16 +9,6 @@ using Newtonsoft.Json;
 
 public partial class Localized
 {
-    public enum ExampleLocalization
-    {
-        Example1,
-        Example2,
-        Example3
-    }
-}
-
-public partial class Localized
-{
     private static Localized? _instance;
     public static Localized Instance
     {   get 
@@ -132,14 +122,18 @@ public partial class Localized
 
             foreach (var enumVal in Utilities.GetEnums(enumType))
             {
-                keys.Add(enumVal.ToString(), "");
+                var key = enumVal.ToString();
+                if (!keys.ContainsKey(key))
+                {
+                    keys.Add(key, "");
+                }
             }
         }
         
         return keys;
     }
 
-    public string GetDefinition(Enum val)
+    public string GetDefinition(Enum val, params object[] values)
     {
         if (languageLibrary == null)
         {
@@ -152,10 +146,15 @@ public partial class Localized
         if (String.IsNullOrWhiteSpace(ret))
         {
             ret = val.GetType().BaseType.ToString() + "." + val.ToString();
-
-            //if (Automation.Automation.HasInstance)
-            //    Debug.LogError($"Localized value \"{ret}\" is missing value.");
         }
-        return ret;
+        return string.Format(ret, values);
+    }
+}
+
+public static class LocalizedExtensions
+{
+    public static string Localize(this Enum val, params object[] values)
+    {
+        return Localized.Instance.GetDefinition(val, values);
     }
 }

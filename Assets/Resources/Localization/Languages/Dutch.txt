@@ -1,0 +1,20 @@
+{
+  "Accept": "",
+  "Cancel": "",
+  "CharacterEditor": "",
+  "Dollars": "",
+  "Example1": "",
+  "Example2": "",
+  "Example3": "",
+  "EyeColor": "",
+  "FacialHair": "",
+  "Female": "",
+  "Gender": "",
+  "Hair": "",
+  "HairColor": "",
+  "Male": "",
+  "None": "",
+  "Save": "",
+  "SkinTone": "",
+  "X_Colon": ""
+}

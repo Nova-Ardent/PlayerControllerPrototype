@@ -8,11 +8,58 @@ using UnityEngine;
 
 public static class Utilities
 {
+    const string circularTransformShaderName = "CircularWorldMath";
+    static ComputeShader? _circularTransformShader;
+    public static ComputeShader? circularTransformShader 
+    { 
+        get {
+            if (_circularTransformShader != null)
+            {
+                return _circularTransformShader;
+            }
+
+            _circularTransformShader = Resources.Load<ComputeShader>("CircularWorldMath");
+            return _circularTransformShader;
+        }
+    }
+
+    static System.Random _R = new System.Random();
+
+    public static bool Any<T>(this IList<T> source)
+    {
+        foreach (var val in source)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static bool Any<T>(this IList<T> source, Func<T, bool> condition, out int index)
+    {
+        for (int i = 0; i < source.Count; i++)
+        {
+            if (condition(source[i]))
+            {
+                index = i;
+                return true;
+            }
+        }
+
+        index = -1;
+        return false;
+    }
+
     public static float ClampAngle(float angle, float from, float to)
     {
         if (angle < 0f) angle = 360 + angle;
         if (angle > 180f) return Mathf.Max(angle, 360 + from);
         return Mathf.Min(angle, to);
+    }
+
+    public static float Circumradius(float sideLength, float numSides)
+    {
+        return sideLength / (2 * Mathf.Sin(Mathf.PI / numSides));
     }
 
     public static bool DegreeInMinRange(float angle, float endPoint1, float endPoint2)
@@ -40,6 +87,22 @@ public static class Utilities
         return RadToVector2(degree * Mathf.Deg2Rad);
     }
 
+    public static void Destroy(this IEnumerable<UnityEngine.GameObject> objects)
+    {
+        foreach (var obj in objects)
+        {
+            GameObject.Destroy(obj.gameObject);
+        }
+    }
+
+    public static void Destroy(this IEnumerable<UnityEngine.MonoBehaviour> objects)
+    {
+        foreach (var obj in objects)
+        {
+            GameObject.Destroy(obj.gameObject);
+        }
+    }
+
     public static T? FirstOrDefault<T>(this IEnumerable<T> source, Func<T, bool> predicate, T? defaultValue) where T : class
     {
         foreach (var value in source)
@@ -59,6 +122,22 @@ public static class Utilities
         return enumType.GetField(name).GetCustomAttributes(false).OfType<TAttribute>().SingleOrDefault();
     }
 
+    public static List<Transform> GetChildrenTransformsRecursive(this Transform transform)
+    {
+        List<Transform> transforms = new List<Transform>();
+        transform.GetChildrenTransformsRecursive(transforms);
+        return transforms;
+    }
+
+    public static void GetChildrenTransformsRecursive(this Transform transform, List<Transform> childrenList)
+    {
+        childrenList.Add(transform);
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).GetChildrenTransformsRecursive(childrenList);
+        }
+    }
+
     public static IEnumerable<Enum> GetEnums(Type type)
     {
         foreach (var e in Enum.GetValues(type))
@@ -75,9 +154,40 @@ public static class Utilities
     {
         var mousePos = Input.mousePosition;
         return new Vector2
-            ( mousePos.x - Screen.width / 2
+            (mousePos.x - Screen.width / 2
             , mousePos.y - Screen.height / 2
-            );;
+            ); ;
+    }
+
+    public static Vector3[] HorizontalBounds(this RectTransform transform, Camera camera)
+    {
+        if (transform is RectTransform rt)
+        {
+            Vector3[] corners = new Vector3[4];
+            rt.GetWorldCorners(corners);
+
+            for (int i = 0; i < corners.Length; i++)
+            {
+                corners[i] = camera.WorldToScreenPoint(corners[i]);
+            }
+
+            Vector3[] BoundingCorners = new Vector3[2];
+            BoundingCorners[0] = corners.Min(x => x.x);
+            BoundingCorners[1] = corners.Max(x => x.x);
+
+            return BoundingCorners;
+        }
+
+        return new Vector3[0];
+    }
+
+    public static int IndexOf<T>(this IList<T> source, Func<T, bool> condition)
+    {
+        for (int i = 0; i < source.Count; i++)
+            if (condition(source[i]))
+                return i;
+
+        return -1;
     }
 
     public static bool InRange(float value, float e1, float e2)
@@ -89,13 +199,170 @@ public static class Utilities
         return e2 > value && e1 < value;
     }
 
-    public static string Localize(this Enum value)
+    public static float InRadius(float sideLength, float numSides)
     {
-        return Localized.Instance.GetDefinition(value);
+        return sideLength / (2 * Mathf.Tan(Mathf.PI / numSides));
+    }
+
+    public static bool Intersects(float leftBound1, float rightBound1, float leftBound2, float rightBound2)
+    {
+        if (leftBound2 <= rightBound1 && leftBound2 >= leftBound1)
+        {
+            return true;
+        }
+        if (rightBound2 <= rightBound1 && rightBound2 >= leftBound1)
+        {
+            return true;
+        }
+        if (leftBound1 <= rightBound2 && leftBound1 >= leftBound2)
+        {
+            return true;
+        }
+        if (rightBound1 <= rightBound2 && rightBound1 >= leftBound2)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public static T Max<T>(this T[] values, Func<T, float> val)
+    {
+        float currentMaxValue = float.MinValue;
+        T currentMax = default(T);
+
+        for (int i = 0; i < values.Length; i++)
+        {
+            var currentValue = val(values[i]);
+            if (currentValue > currentMaxValue)
+            {
+                currentMaxValue = currentValue;
+                currentMax = values[i];
+            }
+        }
+
+        return currentMax;
+    }
+
+    public static T Min<T>(this T[] values, Func<T, float> val)
+    {
+        float currentMinValue = float.MaxValue;
+        T currentMin = default(T);
+
+        for (int i = 0; i < values.Length; i++)
+        {
+            var currentValue = val(values[i]);
+            if (currentValue < currentMinValue)
+            {
+                currentMinValue = currentValue;
+                currentMin = values[i];
+            }
+        }
+
+        return currentMin;
+    }
+
+    public static Vector2 PolarToCartesian(float Radius, float Angle)
+    {
+        return new Vector2(Radius * Mathf.Cos(Angle), Radius * Mathf.Sin(Angle));
     }
 
     public static Vector2 RadToVector2(float radian)
     {
         return new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
+    }
+
+    public static IEnumerable<int> Repeat(this int n)
+    {
+        for (int i = 0; i < n; i++)
+            yield return n;
+    }
+
+    public static T RandomEnum<T>() where T : Enum
+    {
+        var v = Enum.GetValues (typeof (T));
+        return (T) v.GetValue (_R.Next(v.Length));
+    }
+
+    public static T RandomLocalizedEnum<T>() where T : Enum
+    {
+        var v = Enum.GetValues(typeof(T));
+        return (T)v.GetValue(_R.Next(v.Length));
+    }
+
+    public static bool SameAs<T>(this T[] array1, T[] array2)
+    {
+        if (array1.Length != array2.Length) return false;
+
+        for (int i = 0; i < array1.Length; i++)
+        {
+            if (array1[i] == null && array2[i] == null)
+            {
+                continue;
+            }
+            if (array1[i] == null || array2[i] == null)
+            {
+                return false;
+            }
+            if (array1[i]?.Equals(array2[2]) == false)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static void TransformMeshesToCircle(Transform parentTransform, float circumference, bool recalculateMeshData, int rotationalOffset = 0)
+    {
+        if (circularTransformShader == null)
+        {
+            return;
+        }
+
+        int totalSize = sizeof(float) * 3;
+
+        Vector3 outValue = Utilities.TransformVertexToPolygon(circumference, parentTransform.position.x, parentTransform.position.y, parentTransform.position.z, rotationalOffset);
+        Vector3 difference = outValue - parentTransform.position;
+        parentTransform.position = outValue;
+
+        List<Transform> childTransforms = parentTransform.GetChildrenTransformsRecursive();
+        foreach (var childTransform in childTransforms)
+        {
+            if (childTransform.TryGetComponent<MeshFilter>(out MeshFilter meshFilter))
+            {
+                Mesh mesh = meshFilter.mesh;
+
+                Vector3[] data = mesh.vertices;
+                ComputeBuffer computeBuffer = new ComputeBuffer(mesh.vertexCount, totalSize);
+                computeBuffer.SetData(data);
+
+                circularTransformShader.SetBuffer(0, "vertex", computeBuffer);
+                circularTransformShader.SetVector("objectOffset", difference);
+                circularTransformShader.SetMatrix("localToWorld", childTransform.localToWorldMatrix);
+                circularTransformShader.SetMatrix("worldToLocal", childTransform.worldToLocalMatrix);
+                circularTransformShader.SetFloat("circumference", circumference);
+                circularTransformShader.SetFloat("rotationalOffset", rotationalOffset);
+                circularTransformShader.Dispatch(0, (int)Mathf.Ceil(mesh.vertexCount / 32.0f), 1, 1);
+
+                computeBuffer.GetData(data);
+                mesh.SetVertices(data);
+
+                if (recalculateMeshData)
+                {
+                    mesh.RecalculateBounds();
+                    mesh.RecalculateNormals();
+                    mesh.RecalculateTangents();
+                }
+
+                computeBuffer.Dispose();
+            }
+        }
+    }
+
+    public static Vector3 TransformVertexToPolygon(float circumference, float x, float y, float z, float rotationalOffset = 0)
+    {
+        float r = circumference / (2 * Mathf.PI);
+        Vector2 values = PolarToCartesian(y + r, -(x - rotationalOffset) / r);
+        return new Vector3(values.x, values.y, z * ((circumference * Mathf.Sin(Mathf.PI / circumference)) / Mathf.PI));
     }
 }

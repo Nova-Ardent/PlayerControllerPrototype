@@ -1,0 +1,16 @@
+{
+  "Accept": "Accept",
+  "Cancel": "Cancel",
+  "CharacterEditor": "Character Editor",
+  "EyeColor": "Eye Color",
+  "FacialHair": "Facial Hair",
+  "Female": "Female",
+  "Gender": "Gender",
+  "Hair": "Hair",
+  "HairColor": "Hair Color",
+  "Male": "Male",
+  "None": "None",
+  "Save": "Save",
+  "SkinTone": "Skin Tone",
+  "X_Colon": "{0}:"
+}

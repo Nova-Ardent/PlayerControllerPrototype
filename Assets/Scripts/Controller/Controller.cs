@@ -13,6 +13,13 @@ public static class Controller
 
     public enum Controls
     {
+        MouseVertical,
+        MouseHorizontal,
+
+        MenuNavUp,
+        MenuNavLeft,
+        MenuNavRight,
+        MenuNavDown,
     }
 
     public enum InputAlias
@@ -241,6 +248,18 @@ public static class Controller
 
     static void SetupKeyboard()
     {
+        SetupButtonDown(KeyCode.UpArrow, Controls.MenuNavUp, callouts?.keyboardKeys[KeyCode.UpArrow]);
+        SetupButtonDown(KeyCode.LeftArrow, Controls.MenuNavLeft, callouts?.keyboardKeys[KeyCode.LeftArrow]);
+        SetupButtonDown(KeyCode.RightArrow, Controls.MenuNavRight, callouts?.keyboardKeys[KeyCode.RightArrow]);
+        SetupButtonDown(KeyCode.DownArrow, Controls.MenuNavDown, callouts?.keyboardKeys[KeyCode.DownArrow]);
+
+        SetupButtonUp(KeyCode.UpArrow, Controls.MenuNavUp, callouts?.keyboardKeys[KeyCode.UpArrow]);
+        SetupButtonUp(KeyCode.LeftArrow, Controls.MenuNavLeft, callouts?.keyboardKeys[KeyCode.LeftArrow]);
+        SetupButtonUp(KeyCode.RightArrow, Controls.MenuNavRight, callouts?.keyboardKeys[KeyCode.RightArrow]);
+        SetupButtonUp(KeyCode.DownArrow, Controls.MenuNavDown, callouts?.keyboardKeys[KeyCode.DownArrow]);
+
+        SetupButtonAxis(InputAlias.MouseVertical, Controls.MouseVertical, callouts?.mouse);
+        SetupButtonAxis(InputAlias.MouseHorizontal, Controls.MouseHorizontal, callouts?.mouse);
     }
 
     static void SetupXbox()
