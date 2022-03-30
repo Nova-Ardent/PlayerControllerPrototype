@@ -177,12 +177,14 @@ public class CharacterEditor : MonoBehaviour
             person.skinTone = v;
         };
 
+        hair.options = 0.Range(Utilities.GetEnums(typeof(Equippables.HairStyles)).Count());
         hair.indexUpdate = (i, v) =>
         {
             hair.selection.text = i.ToString();
             person.hair = v;
         };
 
+        facialHair.options = 0.Range(Utilities.GetEnums(typeof(Equippables.Beards)).Count());
         facialHair.indexUpdate = (i, v) =>
         {
             facialHair.selection.text = i.ToString();

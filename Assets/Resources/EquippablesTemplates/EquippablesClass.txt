@@ -1,0 +1,14 @@
+// Do not manually modify this file. This file has been procedurally generated.
+
+using System;
+using System.Linq;
+using UnityEngine;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Collections.Generic;
+
+[CreateAssetMenu(fileName = "Equippables", menuName = "ScriptableObjects/Equippables", order = 1)]
+public class Equippables : ScriptableObject
+{
+{0}
+}

@@ -44,7 +44,7 @@ public class PersonEditable : CharacterBase
         set
         {
             _hair = value;
-            SetHairColor(_hairColor);
+            SetHair(_hair);
         }
     }
 
@@ -78,6 +78,10 @@ public class PersonEditable : CharacterBase
     [SerializeField] GameObject female;
     [SerializeField] Animator animator;
 
+    [Header("equippables stuff")]
+    [SerializeField] Equippables equippables;
+    [SerializeField] Transform armature;
+
     Material eyeMaterial;
     Renderer eyeRenderer;
 
@@ -89,6 +93,9 @@ public class PersonEditable : CharacterBase
 
     Material eyeBrowsMaterial;
     Renderer eyeBrowsRenderer;
+
+    Material hairMaterial;
+    Renderer hairRenderer;
 
     [Header("Idle")]
     bool _isIdle;
@@ -191,6 +198,38 @@ public class PersonEditable : CharacterBase
         }
     }
 
+    public void SetHair(int i)
+    {
+        var equippable = equippables.GetHairStyles((Equippables.HairStyles)i);
+
+        if (equippable != null)
+        {
+            Destroy(currentHair);
+
+            var equippableInstance = Instantiate(equippable);
+            equippableInstance.transform.SetParent(this.transform);
+
+            if (equippableInstance != null && equippableInstance.TryGetComponent(out ArmatureReassign ar))
+            {
+                ar.newArmature = armature;
+                ar.Reassign();
+            }
+
+            currentHair = equippableInstance;
+            if (currentHair.transform.childCount > 0 && currentHair.transform.GetChild(0).TryGetComponent(out hairRenderer))
+            {
+                hairMaterial = hairRenderer.material;
+            }
+            else
+            {
+                hairRenderer = null;
+                hairMaterial = null;
+            }
+
+            SetHairColor(_hairColor);
+        }
+    }
+
     public void SetHairColor(Color color)
     {
         if (eyeBrowsMaterial != null)
@@ -198,7 +237,12 @@ public class PersonEditable : CharacterBase
             eyeBrowsMaterial.SetColor("_Color", color);
         }
 
-        if (currentHair != null && currentHair.TryGetComponent<Renderer>(out Renderer hairRenderer))
+        if (hairMaterial != null)
+        {
+            hairMaterial.SetColor("_Color", color);
+        }
+
+        /*if (currentHair != null && currentHair.TryGetComponent<Renderer>(out Renderer hairRenderer))
         {
             hairRenderer.material.SetColor("_Color", color);
         }
@@ -206,6 +250,6 @@ public class PersonEditable : CharacterBase
         if (currentBeard != null && currentHair.TryGetComponent<Renderer>(out Renderer beardRenderer))
         {
             beardRenderer.material.SetColor("_Color", color);
-        }
+        }*/
     }
 }

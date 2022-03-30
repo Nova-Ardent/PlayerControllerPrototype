@@ -289,6 +289,17 @@ public static class Utilities
         return (T)v.GetValue(_R.Next(v.Length));
     }
 
+    public static int[] Range(this int val, int length)
+    {
+        int[] ret = new int[length - val];
+        for (int i = 0; i < length - val; i++)
+        {
+            ret[i] = i + val;
+        }
+
+        return ret;
+    }
+
     public static bool SameAs<T>(this T[] array1, T[] array2)
     {
         if (array1.Length != array2.Length) return false;
