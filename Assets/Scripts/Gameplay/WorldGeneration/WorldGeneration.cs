@@ -17,6 +17,7 @@ namespace WorldGen
             public bool LODActive;
             public bool verbos;
             public string seed;
+            public bool AITestingWorld;
         }
 
         [System.Serializable]
@@ -24,6 +25,8 @@ namespace WorldGen
         {
             public bool diamondSquare;
             public float diamondSquareRoughness;
+            public bool blurring;
+            public int blurringIntensity;
         }
 
         public enum Generation
@@ -35,6 +38,7 @@ namespace WorldGen
             GenerateWorldTiles,
             None,
             AllAtOnce,
+            AITesting,
         }
 
         WorldTile[,] worldTiles;
@@ -50,7 +54,15 @@ namespace WorldGen
         void Start()
         {
             WorldGen.Generation.SetSeed(worldData.seed);
-            currentState = Generation.CreateHeightmap;
+
+            if (worldData.AITestingWorld)
+            {
+                currentState = Generation.AITesting;
+            }
+            else
+            {
+                currentState = Generation.CreateHeightmap;
+            }
         }
 
         void Update()
@@ -66,13 +78,17 @@ namespace WorldGen
                 case Generation.AllAtOnce:
                     currentState = Generation.None;
                     break;
+                case Generation.AITesting:
+                    AITesting();
+                    currentState = Generation.None;
+                    break;
                 case Generation.CreateHeightmap: InitializeHeightmap(); break;
                 case Generation.DiamondSquare: DiamondSquare(); break;
                 case Generation.CalculateNormals: CalculateNormals(); break;
                 case Generation.GenerateWorldTiles: GenerateWorldTiles(); break;
             }
 
-            if (currentState != Generation.None && currentState != Generation.AllAtOnce)
+            if (currentState != Generation.None && currentState != Generation.AllAtOnce && currentState != Generation.AITesting)
             {
                 currentState++;
             }
@@ -118,6 +134,14 @@ namespace WorldGen
         void BlurTerrrain()
         {
 
+        }
+
+        void AITesting()
+        {
+            InitializeHeightmap();
+            WorldGen.Generation.AITesting(worldEditable);
+            CalculateNormals();
+            GenerateWorldTiles();
         }
     }
 

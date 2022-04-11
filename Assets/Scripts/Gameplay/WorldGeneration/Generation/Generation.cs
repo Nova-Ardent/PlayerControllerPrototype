@@ -32,5 +32,10 @@ namespace WorldGen
         {
 
         }
+
+        public static void AITesting(WorldEditable worldEditable)
+        {
+            WorldGen.AITesting.Generate(worldEditable);
+        }
     }
 }
