@@ -376,4 +376,9 @@ public static class Utilities
         Vector2 values = PolarToCartesian(y + r, -(x - rotationalOffset) / r);
         return new Vector3(values.x, values.y, z * ((circumference * Mathf.Sin(Mathf.PI / circumference)) / Mathf.PI));
     }
+
+    public static Vector3 XYZ(this Vector4 vector)
+    {
+        return new Vector3(vector.x, vector.y, vector.z);
+    }
 }
