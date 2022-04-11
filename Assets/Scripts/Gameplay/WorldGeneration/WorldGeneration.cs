@@ -42,7 +42,7 @@ namespace WorldGen
         }
 
         WorldTile[,] worldTiles;
-        WorldEditable worldEditable;
+        public WorldEditable worldEditable;
         Generation currentState;
 
         [SerializeField] WorldData worldData;
