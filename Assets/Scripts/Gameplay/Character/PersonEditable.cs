@@ -155,6 +155,7 @@ public class PersonEditable : CharacterBase
             Debug.LogError("eyebrows msising renderer");
         }
 
+        SetSkinTone(_skinTone);
         SetGender(_gender);
         SetEyeColor(_eyeColor);
         SetHairColor(_hairColor);

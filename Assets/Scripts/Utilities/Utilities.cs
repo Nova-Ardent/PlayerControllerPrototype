@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public static class Utilities
@@ -277,6 +278,16 @@ public static class Utilities
             yield return n;
     }
 
+    public static int Range(this System.Random random, int min, int max)
+    {
+        return random.Next(min, max);
+    }
+
+    public static double Range(this System.Random random, double min, double max)
+    {
+        return random.NextDouble() * (max - min) + min;
+    }
+
     public static T RandomEnum<T>() where T : Enum
     {
         var v = Enum.GetValues (typeof (T));
@@ -321,6 +332,14 @@ public static class Utilities
         }
 
         return true;
+    }
+
+    public static void Time(Action action, object funcName)
+    {
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+        action();
+        watch.Stop();
+        Debug.LogError($"{funcName}: {(watch.ElapsedMilliseconds / 1000.0f).ToString("N4")}");
     }
 
     public static void TransformMeshesToCircle(Transform parentTransform, float circumference, bool recalculateMeshData, int rotationalOffset = 0)

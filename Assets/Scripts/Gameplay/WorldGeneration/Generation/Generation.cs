@@ -30,12 +30,22 @@ namespace WorldGen
 
         public static void Blurring(WorldEditable worldEditable, int intensity)
         {
-
+            WorldGen.Blurring.Generate(worldEditable, intensity);
         }
 
         public static void AITesting(WorldEditable worldEditable)
         {
             WorldGen.AITesting.Generate(worldEditable);
+        }
+
+        public static void Erosion(WorldEditable worldEditable, ErosionData erosionData)
+        {
+            WorldGen.Erosion.Generate(worldEditable, erosionData, random);
+        }
+
+        public static void SinWaveIntensity(WorldEditable worldEditable, SinWaveIntensity sinWaveIntensity)
+        {
+            WorldGen.SinIntensity.Generate(worldEditable, sinWaveIntensity, random);
         }
     }
 }

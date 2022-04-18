@@ -30,6 +30,12 @@ namespace WorldGen
 
         public void ApplyLOD(GameObject meshObject, int index)
         {
+            if (index == 0)
+            {
+                var collider = this.gameObject.AddComponent<MeshCollider>();
+                collider.sharedMesh = meshObject.GetComponent<MeshFilter>().mesh;
+            }
+
             meshObject.transform.SetParent(transform);
 
             var lods = lodGroup.GetLODs();

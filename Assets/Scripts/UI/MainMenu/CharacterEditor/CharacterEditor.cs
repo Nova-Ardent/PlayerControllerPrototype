@@ -122,6 +122,7 @@ public class CharacterEditor : MonoBehaviour
         {
             right.onClick.AddListener(UpdateRight);
             left.onClick.AddListener(UpdateLeft);
+            indexUpdate(selected, options[selected]);
         }
     }
 
@@ -170,6 +171,7 @@ public class CharacterEditor : MonoBehaviour
             eyeColor.colorSplotch.color = v;
             person.eyeColor = v;
         };
+
 
         skinTone.indexUpdate = (i, v) =>
         {

@@ -6,55 +6,55 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PersonUpperBodyMask
+  m_Name: PersonLowerBodyMask
   m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
   m_Elements:
   - m_Path: 
     m_Weight: 1
   - m_Path: Armature
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/AnkleIK.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/AnkleIK.L/AnkleIK.L_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/AnkleIK.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/AnkleIK.R/AnkleIK.R_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/kneeIK.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/kneeIK.L/kneeIK.L_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/kneeIK.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/kneeIK.R/kneeIK.R_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis.L/Quad.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis.L/Quad.L/Shin.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis.L/Quad.L/Shin.L/Foot.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis.L/Quad.L/Shin.L/Foot.L/Toes.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis.L/Quad.L/Shin.L/Foot.L/Toes.L/Toes.L_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis.R/Quad.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis.R/Quad.R/Shin.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis.R/Quad.R/Shin.R/Foot.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis.R/Quad.R/Shin.R/Foot.R/Toes.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Pelvis.R/Quad.R/Shin.R/Foot.R/Toes.R/Toes.R_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Stomach
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Stomach/Chest
     m_Weight: 1
   - m_Path: Armature/Stomach/Chest/Neck
@@ -110,6 +110,6 @@ AvatarMask:
   - m_Path: Eyes
     m_Weight: 1
   - m_Path: Female
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Male
-    m_Weight: 0
+    m_Weight: 1

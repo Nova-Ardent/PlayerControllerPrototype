@@ -23,17 +23,24 @@ namespace WorldGen
         [System.Serializable]
         public struct GenerationOptions
         {
+            public bool sinIntensity;
+            public WorldGen.SinWaveIntensity sinWaveIntensity;
             public bool diamondSquare;
+            //public bool zeroDiamondSquareEdges;
             public float diamondSquareRoughness;
             public bool blurring;
             public int blurringIntensity;
+            public bool erode;
+            public WorldGen.ErosionData erosion;
         }
 
         public enum Generation
         {
             CreateHeightmap,
+            SinIntensity,
             DiamondSquare,
             BlurringTerrain,
+            Erode,
             CalculateNormals,
             GenerateWorldTiles,
             None,
@@ -83,7 +90,10 @@ namespace WorldGen
                     currentState = Generation.None;
                     break;
                 case Generation.CreateHeightmap: InitializeHeightmap(); break;
+                case Generation.SinIntensity: SinWaveIntensity(); break;
                 case Generation.DiamondSquare: DiamondSquare(); break;
+                case Generation.BlurringTerrain: BlurTerrrain(); break;
+                case Generation.Erode: Erode(); break;
                 case Generation.CalculateNormals: CalculateNormals(); break;
                 case Generation.GenerateWorldTiles: GenerateWorldTiles(); break;
             }
@@ -94,46 +104,51 @@ namespace WorldGen
             }
         }
 
-        void Print(bool isRunning, object data)
-        {
-            if (worldData.verbos)
-            {
-                Debug.Log($"{(isRunning ? "running" : "skipping")}: {data}");
-            }
-        }
-
         void InitializeHeightmap()
         {
-            Print(true, currentState);
-            worldEditable = new WorldEditable
-                (worldData.tiles
-                , worldData.tiles
-                , worldData.tileSize
-                , worldData.tileScale
-                );
+            Utilities.Time(() =>
+            {
+                worldEditable = new WorldEditable
+                    (worldData.tiles
+                    , worldData.tiles
+                    , worldData.tileSize
+                    , worldData.tileScale
+                    );
+            }, currentState);
         }
 
         void GenerateWorldTiles()
         {
-            Print(true, currentState);
-            worldTiles = worldEditable.GetWorldTiles(transform, worldTile, material);
+            Utilities.Time(() =>
+            {
+                worldTiles = worldEditable.GetWorldTiles(transform, worldTile, material);
+            }, currentState);
         }
 
         void CalculateNormals()
         {
-            Print(true, currentState);
-            worldEditable.CalculateNormals();
+            Utilities.Time(() =>
+            {
+                worldEditable.CalculateNormals();
+            }, currentState);
         }
 
         void DiamondSquare()
         {
-            Print(generationData.diamondSquare, currentState);
-            WorldGen.Generation.DiamondSquare(worldEditable, generationData.diamondSquareRoughness);
+            if (!generationData.diamondSquare) return;
+            Utilities.Time(() =>
+            {
+                WorldGen.Generation.DiamondSquare(worldEditable, generationData.diamondSquareRoughness);
+            }, currentState);
         }
 
         void BlurTerrrain()
         {
-
+            if (!generationData.blurring) return;
+            Utilities.Time(() =>
+            {
+                WorldGen.Generation.Blurring(worldEditable, generationData.blurringIntensity);
+            }, currentState);
         }
 
         void AITesting()
@@ -143,6 +158,23 @@ namespace WorldGen
             CalculateNormals();
             GenerateWorldTiles();
         }
-    }
 
+        void Erode()
+        {
+            if (!generationData.erode) return;
+            Utilities.Time(() =>
+            {
+                WorldGen.Generation.Erosion(worldEditable, generationData.erosion);
+            }, currentState);
+        }
+
+        void SinWaveIntensity()
+        {
+            if (!generationData.sinIntensity) return;
+            Utilities.Time(() =>
+            {
+                WorldGen.Generation.SinWaveIntensity(worldEditable, generationData.sinWaveIntensity);
+            }, currentState);
+        }
+    }
 }
