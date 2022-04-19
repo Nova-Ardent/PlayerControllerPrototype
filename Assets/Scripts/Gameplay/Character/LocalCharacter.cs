@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class LocalCharacter : CharacterBase
 {
-
+    [SerializeField] GameObject cameraBase;
 }

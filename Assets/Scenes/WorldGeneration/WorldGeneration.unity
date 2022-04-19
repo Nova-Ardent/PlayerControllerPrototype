@@ -2294,6 +2294,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8056612789830746000}
   - component: {fileID: 4120506072392213994}
+  - component: {fileID: 7243202211890242859}
   m_Layer: 0
   m_Name: Person
   m_TagString: Untagged
@@ -2301,6 +2302,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!143 &7243202211890242859
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7243202211890242858}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 3.54
+  m_Radius: 0.7
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1.62, z: -0.3}
 --- !u!1 &7281044330986553776
 GameObject:
   m_ObjectHideFlags: 0
@@ -2377,7 +2396,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2de96437103a33f4ab4605f47920f8e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 4120506072392213994}
   _gender: 1
   _eyeColor: {r: 0, g: 0, b: 0, a: 0}
   _skinTone: {r: 0, g: 0, b: 0, a: 0}
@@ -2406,7 +2424,6 @@ GameObject:
   - component: {fileID: 7513253054833074004}
   - component: {fileID: 7513253054833074005}
   - component: {fileID: 7513253054833074007}
-  - component: {fileID: 7513253054833074008}
   m_Layer: 0
   m_Name: LocalCharacter
   m_TagString: Untagged
@@ -2427,24 +2444,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 4120506072392213994}
---- !u!143 &7513253054833074008
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7513253054833074006}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 3.54
-  m_Radius: 0.7
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1.62, z: 0}
+  personBase: {fileID: 7243202211890242858}
+  lockOn: {fileID: 0}
+  cameraBase: {fileID: 1687258581}
 --- !u!4 &7666218181995407468
 Transform:
   m_ObjectHideFlags: 0

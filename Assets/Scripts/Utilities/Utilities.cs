@@ -160,6 +160,20 @@ public static class Utilities
             ); ;
     }
 
+    public struct Example
+    {
+        public int id;
+        public string name;
+        public int count;
+
+        public Example(int id, string name, int count)
+        {
+            this.id = id;
+            this.name = name;
+            this.count = count;
+        }
+    }
+
     public static Vector3[] HorizontalBounds(this RectTransform transform, Camera camera)
     {
         if (transform is RectTransform rt)

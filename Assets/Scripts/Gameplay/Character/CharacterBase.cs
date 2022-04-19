@@ -1,7 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Network;
+using System.Linq;
+using static Utilities;
 
 public class CharacterBase : MonoBehaviour
 {
@@ -54,6 +54,9 @@ public class CharacterBase : MonoBehaviour
     }
 
     [SerializeField] Animator animator;
+    [SerializeField] GameObject personBase;
+    [SerializeField] GameObject lockOn;
+
 
     void Start()
     {

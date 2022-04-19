@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PersonEditable : CharacterBase
+public class PersonEditable : MonoBehaviour
 {
     [SerializeField] Localized.GenderSelection _gender;
     public Localized.GenderSelection gender
