@@ -27,7 +27,7 @@ namespace Network
             inbound.Start();
 
             Debug.Log($"listening to: {client} {Network.Instance.clientPort}");
-            foreach (var opCode in Utilities.GetEnums(typeof(Packet.OPCodes)).Cast<Packet.OPCodes>())
+            foreach (var opCode in Utilities.GetEnums<Packet.OPCodes>())
             {
                 Callbacks[opCode] = (x) => { };
             }

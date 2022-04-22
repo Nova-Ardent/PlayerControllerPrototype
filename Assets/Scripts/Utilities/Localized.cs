@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEditor;
 using Newtonsoft.Json;
@@ -24,11 +25,14 @@ public partial class Localized
     public const string RESOURCE_LANGUAGES_PATH = "Localization/Languages";
     public const string LANGUAGES_PATH = "Assets/Resources/Localization/Languages";
 
-    public int currentLanguage;
-    public string[] languages =
-        { "English_NA"
-        , "Dutch"
-        };
+    public Languages currentLanguage;
+    public enum Languages
+    {
+        Keys_Doc,
+        Description_Doc,
+        English_NA,
+        Dutch,
+    }
 
     SortedDictionary<string, string>? languageLibrary;
 
@@ -37,21 +41,21 @@ public partial class Localized
         
     }
 
-    public void SetLanguage(int lang)
+    public void SetLanguage(Languages lang)
     {
         this.currentLanguage = lang;
-        this.languageLibrary = LoadLanguage(languages[lang]);
+        this.languageLibrary = LoadLanguage(lang.ToString());
     }
 
     public void ValidateAndCreateLanguages()
     {
 #if UNITY_EDITOR
-        foreach (var lang in languages)
+        foreach (var lang in Utilities.GetEnums<Languages>())
         {
             string path = LANGUAGES_PATH + $"/{lang}" + ".txt";
             if (AssetDatabase.FindAssets($"{lang}").Length == 0)
             {
-                string defaultText = JsonConvert.SerializeObject(GenerateEmptyDictionary(), Formatting.Indented);
+                string defaultText = JsonConvert.SerializeObject(GenerateEmptyDictionary(lang == Languages.Keys_Doc), Formatting.Indented);
 
                 var sw = new System.IO.StreamWriter(path);
                 sw.Write(defaultText);
@@ -60,7 +64,7 @@ public partial class Localized
             else
             {
                 bool dirty = false;
-                string updatedText = JsonConvert.SerializeObject(LoadLanguage(lang, out dirty), Formatting.Indented);
+                string updatedText = JsonConvert.SerializeObject(LoadLanguage(lang.ToString(), out dirty), Formatting.Indented);
                 if (dirty)
                 {
                     var usw = new System.IO.StreamWriter(path);
@@ -107,10 +111,10 @@ public partial class Localized
 
             return ret;
         }
-        return GenerateEmptyDictionary();
+        return GenerateEmptyDictionary(false);
     }
 
-    public SortedDictionary<string, string> GenerateEmptyDictionary()
+    public SortedDictionary<string, string> GenerateEmptyDictionary(bool isKeysDoc)
     {
         SortedDictionary<string, string> keys = new SortedDictionary<string, string>();
         foreach (var enumType in typeof(Localized).GetNestedTypes())
@@ -125,7 +129,7 @@ public partial class Localized
                 var key = enumVal.ToString();
                 if (!keys.ContainsKey(key))
                 {
-                    keys.Add(key, "");
+                    keys.Add(key, isKeysDoc ? $"{enumType.ToString().Replace('+', '.')}.{key}" : "");
                 }
             }
         }

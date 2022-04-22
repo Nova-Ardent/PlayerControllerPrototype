@@ -52,7 +52,7 @@ public class DataMap<K, V> : DataMap
 
     public DataMap()
     {
-        keys = Utilities.GetEnums(typeof(K)).Cast<K>().ToArray();
+        keys = Utilities.GetEnums<K>().ToArray();
         values = new V[keys.Length];
     }
 
@@ -73,7 +73,7 @@ public class DataMap<K, V> : DataMap
         var tempKeys = keys;
         var tempValues = values;
 
-        keys = Utilities.GetEnums(typeof(K)).Cast<K>().ToArray();
+        keys = Utilities.GetEnums<K>().ToArray();
         values = new V[keys.Length];
         _keyRefs = new Dictionary<K, int>();
 

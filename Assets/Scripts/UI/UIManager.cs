@@ -39,7 +39,7 @@ namespace UI
         private void Start()
         {
             Localized.Instance.ValidateAndCreateLanguages();
-            Localized.Instance.SetLanguage(0);
+            Localized.Instance.SetLanguage(Localized.Languages.English_NA);
 
             if (callouts != null)
             {

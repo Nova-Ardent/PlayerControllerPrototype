@@ -44,7 +44,7 @@ namespace Network
             connecting.Interval = 500;
             connecting.Enabled = true;
 
-            foreach (var opCode in Utilities.GetEnums(typeof(Packet.OPCodes)).Cast<Packet.OPCodes>())
+            foreach (var opCode in Utilities.GetEnums<Packet.OPCodes>())
             {
                 Callbacks[opCode] = (x) => { };
             }

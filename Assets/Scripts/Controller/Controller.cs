@@ -20,6 +20,22 @@ public static class Controller
         MenuNavLeft,
         MenuNavRight,
         MenuNavDown,
+
+        CameraVertical,
+        CameraHorizontal,
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        // Debug only controls. Do not use them outside of the debug menu.
+        DebugMenuOpen,
+        DebugMenuClose,
+    }
+
+    public enum KeyType
+    {
+        Regular,
+        Debug,
+        Both,
+#endif
     }
 
     public enum InputAlias
@@ -48,11 +64,15 @@ public static class Controller
         automation,
     }
 
-    static bool controllersAreSetup;
+    public static bool controllersAreSetup { get; private set; }
     static ControllerBase? controllerSetup;
     static Keyboard keyboard = new Keyboard();
     static XboxController xboxController = new XboxController();
     static PSController pSController = new PSController();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+    public static bool debugMenuOpen = false;
+    static KeyType[] debugMenuControls = new KeyType[Utilities.GetEnums<Controls>().Count()];
+#endif
 
     static ControllerBase? currentController;
     static ControllerType _currentControllerType;
@@ -101,6 +121,7 @@ public static class Controller
         currentControllerType = (ControllerType)controllerType;
     }
 
+#region Setup
     static void SetupButtonAxis(InputAlias alias, Controls control, Sprite? callout)
     {
         controllerSetup?.SetupButtonAxis(alias, control, callout);
@@ -181,25 +202,49 @@ public static class Controller
     {
         controllerSetup?.SetupMouseButtonUp(button, control, callout);
     }
-
-
+    #endregion
+#region Get
     public static bool GetKey(Controls control)
     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        if (DebugWillEatInput(control))
+        {
+            return false;
+        }
+#endif 
         return currentController?.GetKey(control) ?? false;
     }
 
     public static bool GetKeyUp(Controls control)
     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        if (DebugWillEatInput(control))
+        {
+            return false;
+        }
+#endif 
         return currentController?.GetKeyUp(control) ?? false;
     }
 
     public static bool GetKeyDown(Controls control)
     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        if (DebugWillEatInput(control))
+        {
+            return false;
+        }
+#endif 
         return currentController?.GetKeyDown(control) ?? false;
     }
 
     public static float GetAxis(Controls control)
     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        if (DebugWillEatInput(control))
+        {
+            return 0;
+        }
+#endif 
         return currentController?.GetAxis(control) ?? 0;
     }
 
@@ -228,7 +273,7 @@ public static class Controller
         }
         return new Sprite[] { Sprite.Create(new Texture2D(1, 1), new Rect(0, 0, 1, 1), new Vector2(0.5f, 0.5f)) };
     }
-
+#endregion
     public static void SetupControllers(Callouts calloutsData)
     {
         callouts = calloutsData;
@@ -241,6 +286,10 @@ public static class Controller
 
         controllerSetup = pSController;
         SetupPS();
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        DebugKeys();
+#endif
 
         controllersAreSetup = true;
         controllerSetup = null;
@@ -260,6 +309,12 @@ public static class Controller
 
         SetupButtonAxis(InputAlias.MouseVertical, Controls.MouseVertical, callouts?.mouse);
         SetupButtonAxis(InputAlias.MouseHorizontal, Controls.MouseHorizontal, callouts?.mouse);
+
+        SetupButtonAxis(InputAlias.MouseVertical, Controls.CameraVertical, callouts?.mouse);
+        SetupButtonAxis(InputAlias.MouseHorizontal, Controls.CameraHorizontal, callouts?.mouse);
+
+        SetupButtonDown(KeyCode.BackQuote, Controls.DebugMenuOpen, null);
+        SetupButtonDown(KeyCode.Escape, Controls.DebugMenuClose, null);
     }
 
     static void SetupXbox()
@@ -269,4 +324,37 @@ public static class Controller
     static void SetupPS()
     {
     }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+    static void RegisterDebugAsButton(Controls control, KeyType keyType = KeyType.Debug)
+    {
+        debugMenuControls[(int)control] = keyType;
+    }
+
+    static void DebugKeys()
+    {
+        RegisterDebugAsButton(Controls.DebugMenuOpen, KeyType.Both);
+        RegisterDebugAsButton(Controls.DebugMenuClose, KeyType.Debug);
+    }
+
+    static bool DebugWillEatInput(Controls control)
+    {
+        if (debugMenuControls[(int)control] == KeyType.Both)
+        {
+            return false;
+        }
+
+        if (debugMenuControls[(int)control] == KeyType.Regular && debugMenuOpen)
+        {
+            return true;
+        }
+
+        if (debugMenuControls[(int)control] == KeyType.Debug && !debugMenuOpen)
+        {
+            return true;
+        }
+
+        return false;
+    }
+#endif
 }

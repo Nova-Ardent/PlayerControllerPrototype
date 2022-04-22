@@ -56,13 +56,4 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] GameObject personBase;
     [SerializeField] GameObject lockOn;
-
-
-    void Start()
-    {
-    }
-
-    void Update()
-    {
-    }
 }

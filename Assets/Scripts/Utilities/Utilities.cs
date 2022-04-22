@@ -151,6 +151,11 @@ public static class Utilities
         }
     }
 
+    public static IEnumerable<T> GetEnums<T>() where T : Enum
+    {
+        return Enum.GetValues(typeof(T)).Cast<T>();
+    }
+
     public static Vector2 GetMouseFromCenter()
     {
         var mousePos = Input.mousePosition;
