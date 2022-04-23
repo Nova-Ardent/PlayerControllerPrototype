@@ -28,6 +28,13 @@ public static class Controller
         // Debug only controls. Do not use them outside of the debug menu.
         DebugMenuOpen,
         DebugMenuClose,
+
+        DebugUp,
+        DebugRight,
+        DebugDown,
+        DebugLeft,
+        DebugPageUp,
+        DebugPageDown,
     }
 
     public enum KeyType
@@ -315,6 +322,12 @@ public static class Controller
 
         SetupButtonDown(KeyCode.BackQuote, Controls.DebugMenuOpen, null);
         SetupButtonDown(KeyCode.Escape, Controls.DebugMenuClose, null);
+        SetupButtonDown(KeyCode.UpArrow, Controls.DebugUp, null);
+        SetupButtonDown(KeyCode.RightArrow, Controls.DebugRight, null);
+        SetupButtonDown(KeyCode.DownArrow, Controls.DebugDown, null);
+        SetupButtonDown(KeyCode.LeftArrow, Controls.DebugLeft, null);
+        SetupButtonDown(KeyCode.PageUp, Controls.DebugPageUp, null);
+        SetupButtonDown(KeyCode.PageDown, Controls.DebugPageDown, null);
     }
 
     static void SetupXbox()
@@ -335,6 +348,12 @@ public static class Controller
     {
         RegisterDebugAsButton(Controls.DebugMenuOpen, KeyType.Both);
         RegisterDebugAsButton(Controls.DebugMenuClose, KeyType.Debug);
+        RegisterDebugAsButton(Controls.DebugUp, KeyType.Debug);
+        RegisterDebugAsButton(Controls.DebugRight, KeyType.Debug);
+        RegisterDebugAsButton(Controls.DebugDown, KeyType.Debug);
+        RegisterDebugAsButton(Controls.DebugLeft, KeyType.Debug);
+        RegisterDebugAsButton(Controls.DebugPageUp, KeyType.Debug);
+        RegisterDebugAsButton(Controls.DebugPageDown, KeyType.Debug);
     }
 
     static bool DebugWillEatInput(Controls control)

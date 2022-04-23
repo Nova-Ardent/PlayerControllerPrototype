@@ -28,11 +28,23 @@ public class LocalCharacter : CharacterBase
         Localized.Instance.ValidateAndCreateLanguages();
         Localized.Instance.SetLanguage(0);
 
-        /*if (!Controller.controllersAreSetup)
+        if (!Controller.controllersAreSetup)
         {
             Controller.SetupControllers(callouts);
             Controller.SetControllerType(Controller.ControllerType.keyboard);
-        }*/
+        }
+
+        if (SteamManager.Initialized)
+        {
+            characterData.name = Steamworks.SteamFriends.GetPersonaName();
+        }
+
+        RegisterDebug();
+    }
+
+    private void OnDestroy()
+    {
+        UnregisterDebug();
     }
 
 
@@ -59,4 +71,19 @@ public class LocalCharacter : CharacterBase
             cameraData.cameraBase.transform.localRotation = Quaternion.Euler(0, cameraData.cameraRotation, 0);
         }
     }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+    void RegisterDebug()
+    {
+        DebugMenu.DebugMenu.Instance.RegisterPanel
+        ( "Player"
+        , new DebugMenu.DebugOption("name: ", characterData.name)
+        );
+    }
+
+    void UnregisterDebug()
+    {
+        DebugMenu.DebugMenu.Instance.UnRegisterPanel("Player");
+    }
+#endif
 }

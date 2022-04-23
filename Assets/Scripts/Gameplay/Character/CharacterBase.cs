@@ -5,6 +5,12 @@ using static Utilities;
 
 public class CharacterBase : MonoBehaviour
 {
+    [System.Serializable]
+    public struct CharacterData
+    {
+        public string name;
+    }
+
     bool _isIdle;
     public bool isIdle
     {
@@ -55,5 +61,6 @@ public class CharacterBase : MonoBehaviour
 
     [SerializeField] Animator animator;
     [SerializeField] GameObject personBase;
-    [SerializeField] GameObject lockOn;
+    [SerializeField] GameObject lockOn; 
+    [SerializeField] protected CharacterData characterData;
 }
