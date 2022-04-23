@@ -2587,8 +2587,6 @@ MonoBehaviour:
     cameraRotation: 0
     cameraZoom: 0
     cameraAngle: 0
-  characterData:
-    name: 
 --- !u!4 &7666218181995407468
 Transform:
   m_ObjectHideFlags: 0
