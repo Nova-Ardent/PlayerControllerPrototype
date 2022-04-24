@@ -76,8 +76,9 @@ public class LocalCharacter : CharacterBase
     void RegisterDebug()
     {
         DebugMenu.DebugMenu.Instance.RegisterPanel
-        ( "Player"
+        ("Player", this
         , new DebugMenu.DebugOption("name: ", characterData.name)
+        , new DebugMenu.DebugOption("pizza is cool", "he likes pizza")
         );
     }
 

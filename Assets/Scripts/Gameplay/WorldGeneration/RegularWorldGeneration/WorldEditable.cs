@@ -21,13 +21,12 @@ namespace WorldGen
         public float[,] heightMap
         {
             get => _heightMap;
-            private set => _heightMap = value;
+            set => _heightMap = value;
         }
 
         public int xTiles;
         public int yTiles;
         public int tileSize;
-        public bool useEdgeNormalsWorkAround = true;
 
         float scale;
 
@@ -188,7 +187,7 @@ namespace WorldGen
                 meshFilter.mesh = lodMeshes[i];
 
                 lod.gameObject.isStatic = true;
-                tile.ApplyLOD(lod, i);
+                tile.ApplyLOD(i, lod);
             }
         }
     }

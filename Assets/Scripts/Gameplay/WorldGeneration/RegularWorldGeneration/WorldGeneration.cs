@@ -7,20 +7,6 @@ namespace WorldGen
     public class WorldGeneration : MonoBehaviour
     {
         [System.Serializable]
-        public struct WorldData
-        {
-            public int tiles;
-
-            public int tileSize;
-            public float tileScale;
-
-            public bool LODActive;
-            public bool verbos;
-            public string seed;
-            public bool AITestingWorld;
-        }
-
-        [System.Serializable]
         public struct GenerationOptions
         {
             public bool sinIntensity;

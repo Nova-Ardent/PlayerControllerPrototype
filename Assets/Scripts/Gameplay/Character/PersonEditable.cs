@@ -114,6 +114,7 @@ public class PersonEditable : MonoBehaviour
 
     private void Start()
     {
+        RegisterDebugMenu();
         if (male == null || female == null || animator == null)
         {
             Debug.LogError("missing components to Person GO.");
@@ -253,4 +254,12 @@ public class PersonEditable : MonoBehaviour
             beardRenderer.material.SetColor("_Color", color);
         }*/
     }
+
+    public void RegisterDebugMenu()
+    {
+        DebugMenu.DebugMenu.Instance.RegisterPanel("Player", this
+            , new DebugMenu.DebugOption("ummm, lets say; frames per second", "69 as the value.")
+            );
+    }
+
 }

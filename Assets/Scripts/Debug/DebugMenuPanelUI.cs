@@ -13,6 +13,19 @@ namespace DebugMenu
             this.debugOptions = debugOptions;
         }
 
+        public void Append(IEnumerable<DebugOption> debugOptions)
+        {
+            this.debugOptions = this.debugOptions
+                .Concat(debugOptions).ToArray();
+        }
+
+        public void RemoveOptionsWithParent(object parent)
+        {
+            debugOptions = debugOptions
+                .Where(x => x.parent == parent)
+                .ToArray();
+        }
+
         public DebugMenuPanelTitle title;
         public DebugOption[] debugOptions;
     }

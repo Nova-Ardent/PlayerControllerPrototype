@@ -245,6 +245,15 @@ public static class Utilities
         return false;
     }
 
+    public static bool IsAny<T>(this T val, T v1) => val.Equals(v1); 
+    public static bool IsAny<T>(this T val, T v1, T v2) => val.Equals(v1) || val.Equals(v2); 
+    public static bool IsAny<T>(this T val, T v1, T v2, T v3) => val.Equals(v1) || val.Equals(v2) || val.Equals(v3); 
+    public static bool IsAny<T>(this T val, T v1, T v2, T v3, T v4) => val.Equals(v1) || val.Equals(v2) || val.Equals(v3) || val.Equals(v4); 
+    public static bool IsAny<T>(this T val, T v1, T v2, T v3, T v4, T v5) => val.Equals(v1) || val.Equals(v2) || val.Equals(v3) || val.Equals(v4) || val.Equals(v5); 
+    public static bool IsAny<T>(this T val, T v1, T v2, T v3, T v4, T v5, T v6) => val.Equals(v1) || val.Equals(v2) || val.Equals(v3) || val.Equals(v4) || val.Equals(v5) || val.Equals(v6); 
+    public static bool IsAny<T>(this T val, T v1, T v2, T v3, T v4, T v5, T v6, T v7) => val.Equals(v1) || val.Equals(v2) || val.Equals(v3) || val.Equals(v4) || val.Equals(v5) || val.Equals(v6) || val.Equals(v7); 
+    public static bool IsAny<T>(this T val, T v1, T v2, T v3, T v4, T v5, T v6, T v7, T v8) => val.Equals(v1) || val.Equals(v2) || val.Equals(v3) || val.Equals(v4) || val.Equals(v5) || val.Equals(v6) || val.Equals(v7) || val.Equals(v8); 
+
     public static T Max<T>(this T[] values, Func<T, float> val)
     {
         float currentMaxValue = float.MinValue;
@@ -358,7 +367,7 @@ public static class Utilities
         var watch = System.Diagnostics.Stopwatch.StartNew();
         action();
         watch.Stop();
-        Debug.LogError($"{funcName}: {(watch.ElapsedMilliseconds / 1000.0f).ToString("N4")}");
+        Debug.Log($"{funcName}: {(watch.ElapsedMilliseconds / 1000.0f).ToString("N4")}");
     }
 
     public static void TransformMeshesToCircle(Transform parentTransform, float circumference, bool recalculateMeshData, int rotationalOffset = 0)

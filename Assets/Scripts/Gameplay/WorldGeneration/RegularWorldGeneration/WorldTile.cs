@@ -28,18 +28,21 @@ namespace WorldGen
             lodGroup.ForceLOD(-1);
         }
 
-        public void ApplyLOD(GameObject meshObject, int index)
+        public void ApplyLOD(int index, params GameObject[] meshObject)
         {
             if (index == 0)
             {
-                var collider = this.gameObject.AddComponent<MeshCollider>();
-                collider.sharedMesh = meshObject.GetComponent<MeshFilter>().mesh;
+                //var collider = this.gameObject.AddComponent<MeshCollider>();
+                //collider.sharedMesh = meshObject.GetComponent<MeshFilter>().mesh;
             }
 
-            meshObject.transform.SetParent(transform);
+            for (int i = 0; i < meshObject.Length; i++)
+            {
+                meshObject[i].transform.SetParent(transform);
+            }
 
             var lods = lodGroup.GetLODs();
-            lods[index].renderers = lods[index].renderers.Append(meshObject.GetComponent<Renderer>()).ToArray();
+            lods[index].renderers = lods[index].renderers.Concat(meshObject.Select(x => x.GetComponent<Renderer>())).ToArray();
             lodGroup.SetLODs(lods);
         }
     }

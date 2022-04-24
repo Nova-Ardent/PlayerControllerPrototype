@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7042832560974357197
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7042832560974357198}
+  - component: {fileID: 7042832560974357199}
+  m_Layer: 0
+  m_Name: GenericWorldGeneration
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &7042832560974357198
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7042832560974357197}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7042832560974357199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7042832560974357197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51a5c34f9d05da14784bf0febad9223d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldData:
+    tiles: 16
+    tileSize: 128
+    tileScale: 0.25
+    LODActive: 1
+    verbos: 1
+    seed: JordanLand
+    AITestingWorld: 0
+  generationData:
+    sinIntensity: 1
+    diamondSquare: 1
+    diamondSquareRoughness: 360
+    blurring: 1
+    blurringIntensity: 2
+    erode: 0
+    erosion:
+      erosion: {fileID: 7200000, guid: 5213597f4c227384289f42bd90f5b237, type: 3}
+      numErosionIterations: 5000
+      erosionBrushRadius: 3
+      maxLifetime: 30
+      sedimentCapacityFactor: 3
+      minSedimentCapacity: 0.01
+      depositSpeed: 0.3
+      erodeSpeed: 0.3
+      evaporateSpeed: 0.01
+      gravity: 4
+      startSpeed: 1
+      startWater: 1
+      inertia: 0.3
+      segmentDivs: 2048
+  worldTile: {fileID: 7190603839282132848, guid: 05ef611695d63c344b09f71b91326910, type: 3}
+  material: {fileID: 2100000, guid: 3fd17dd0bf4984348979ed19195a7218, type: 2}

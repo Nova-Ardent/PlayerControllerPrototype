@@ -123,81 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &1119471785
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1119471786}
-  - component: {fileID: 1119471787}
-  m_Layer: 0
-  m_Name: WorldGeneration
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!4 &1119471786
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119471785}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1119471787
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119471785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51a5c34f9d05da14784bf0febad9223d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  worldData:
-    tiles: 4
-    tileSize: 128
-    tileScale: 0.25
-    LODActive: 1
-    verbos: 1
-    seed: JordanLand
-    AITestingWorld: 1
-  generationData:
-    sinIntensity: 1
-    diamondSquare: 1
-    diamondSquareRoughness: 300
-    blurring: 1
-    blurringIntensity: 2
-    erode: 0
-    erosion:
-      erosion: {fileID: 7200000, guid: 5213597f4c227384289f42bd90f5b237, type: 3}
-      numErosionIterations: 5000
-      erosionBrushRadius: 3
-      maxLifetime: 30
-      sedimentCapacityFactor: 3
-      minSedimentCapacity: 0.01
-      depositSpeed: 0.3
-      erodeSpeed: 0.3
-      evaporateSpeed: 0.01
-      gravity: 4
-      startSpeed: 1
-      startWater: 1
-      inertia: 0.3
-      segmentDivs: 2048
-  worldTile: {fileID: 7190603839282132848, guid: 05ef611695d63c344b09f71b91326910, type: 3}
-  material: {fileID: 2100000, guid: 3fd17dd0bf4984348979ed19195a7218, type: 2}
 --- !u!1 &1312601992
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,7 +217,7 @@ Transform:
   m_LocalScale: {x: 10000, y: 1, z: 10000}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1494954655
 GameObject:
@@ -342,6 +267,71 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1511683675
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1511683677}
+  - component: {fileID: 1511683676}
+  m_Layer: 0
+  m_Name: FloatingWorld
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1511683676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511683675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af9b3de416e33ff4fa7893c4c8bd3731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldData:
+    tiles: 32
+    tileSize: 128
+    tileScale: 0.25
+    LODActive: 1
+    verbos: 1
+    seed: 
+    AITestingWorld: 0
+  edgeThickness: 2
+  edgecleaningIterations: 2
+  topTranslation: 2
+  topTranslationValue: 30
+  topTranslationIterations: 5
+  booleanTwice: 0
+  topGenerationData:
+    diamondSquare: 1
+    diamondSquareRoughness: 320
+  bottomGenerationData:
+    diamondSquare: 1
+    diamondSquareRoughness: 1440
+  worldTile: {fileID: 7190603839282132848, guid: 05ef611695d63c344b09f71b91326910, type: 3}
+  material: {fileID: 2100000, guid: 3fd17dd0bf4984348979ed19195a7218, type: 2}
+--- !u!4 &1511683677
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511683675}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1687258581
 GameObject:
@@ -494,7 +484,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2596137335253151320, guid: e3076de687340a24e8f6f4b572caa8a3, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2596137335253151320, guid: e3076de687340a24e8f6f4b572caa8a3, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2510,7 +2500,7 @@ Transform:
   - {fileID: 8056612789830746000}
   - {fileID: 2052134740}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7513253054833074005
 MonoBehaviour:
@@ -2558,7 +2548,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &7513253054833074007
 MonoBehaviour:
   m_ObjectHideFlags: 0

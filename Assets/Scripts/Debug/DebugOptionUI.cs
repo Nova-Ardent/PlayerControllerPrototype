@@ -14,8 +14,15 @@ namespace DebugMenu
             this.description = description;
         }
 
+        public DebugOption SetParent(object parent)
+        {
+            this.parent = parent;
+            return this;
+        }
+
         public string name;
         public string description;
+        public object parent;
     }
 
     public class DebugOptionUI : MonoBehaviour

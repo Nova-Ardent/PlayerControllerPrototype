@@ -25,7 +25,20 @@ namespace WorldGen
 
         public static void DiamondSquare(WorldEditable worldEditable, float roughness)
         {
-            WorldGen.DiamondSquare.Generate(worldEditable, roughness, random);
+            worldEditable.heightMap = WorldGen.DiamondSquare.Generate(worldEditable.heightMap, roughness, random);
+        }
+
+        public static void DiamondSquare(FloatingWorldEditable floatingWorldEditable, bool useTop, float topRoughness, bool useBottom, float bottomRoughness)
+        {
+            if (useTop)
+            {
+                floatingWorldEditable.topHeightValues = WorldGen.DiamondSquare.Generate(floatingWorldEditable.topHeightValues, topRoughness, random);
+            }
+
+            if (useBottom)
+            {
+                floatingWorldEditable.bottomHeightValues = WorldGen.DiamondSquare.Generate(floatingWorldEditable.bottomHeightValues, bottomRoughness, random);
+            }
         }
 
         public static void Blurring(WorldEditable worldEditable, int intensity)

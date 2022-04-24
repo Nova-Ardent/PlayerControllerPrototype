@@ -103,11 +103,24 @@ namespace DebugMenu
 
         void RegisterDefaultPanels()
         {
-            RegisterPanel("Default Panel");
+            RegisterPanel("Default Panel", this
+            , new DebugOption("boop", "boop")
+            );
         }
 
         public void RegisterPanel(string title, params DebugOption[] debugOptions)
         {
+            RegisterPanel(title, null, debugOptions);
+        }
+
+        public void RegisterPanel(string title, object from, params DebugOption[] debugOptions)
+        {
+            if (debugMenuPanels.Any(x => x.title.Equals(title), out int index))
+            {
+                debugMenuPanels[index]
+                    .Append(debugOptions.Select(x => x.SetParent(from)));
+            }
+
             debugMenuPanels = debugMenuPanels
                 .Append(new DebugMenuPanel(title, debugOptions))
                 .ToArray();
@@ -118,6 +131,11 @@ namespace DebugMenu
             debugMenuPanels = debugMenuPanels
                 .Where(x => !x.Equals(title))
                 .ToArray();
+        }
+
+        public void UnRegisterPanel(string title, object from)
+        {
+
         }
     }
 }
