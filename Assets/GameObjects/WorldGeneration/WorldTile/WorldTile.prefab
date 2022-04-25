@@ -45,9 +45,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lodGroup: {fileID: 7190603839282132855}
+  customLODDistancing:
+    Active: 1
+    LOD0Distance: 3
+    LOD1Distance: 6
+    LOD2Distance: 7
+    LOD3Distance: 8
+    LOD4Distance: 9
   scale: 0.5
   xSegments: 64
   ySegments: 64
+  tileCenterX: 0
+  tileCenterY: 0
 --- !u!205 &7190603839282132855
 LODGroup:
   m_ObjectHideFlags: 0

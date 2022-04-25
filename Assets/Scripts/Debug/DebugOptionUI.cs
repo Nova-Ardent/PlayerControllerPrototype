@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 namespace DebugMenu
 {
     public class DebugOption
     {
         public DebugOption(string name, string description)
+        {
+            this.name = name;
+            this.description = () => description;
+        }
+
+        public DebugOption(string name, Func<string> description)
         {
             this.name = name;
             this.description = description;
@@ -21,7 +28,7 @@ namespace DebugMenu
         }
 
         public string name;
-        public string description;
+        public Func<string> description;
         public object parent;
     }
 
@@ -38,6 +45,7 @@ namespace DebugMenu
             }
         }
 
+        DebugOption debugOption;
         public TextMeshProUGUI title;
         public TextMeshProUGUI description;
 
@@ -51,10 +59,15 @@ namespace DebugMenu
         public DebugOptionUI downOption;
         //public DebugOptionUI leftOption;
 
-        public void ApplyData(DebugOption debugOption)
+        public void UpdateData()
         {
             title.text = debugOption.name;
-            description.text = debugOption.description;
+            description.text = debugOption.description();
+        }
+
+        public void ApplyData(DebugOption debugOption)
+        {
+            this.debugOption = debugOption;
         }
     }
 }

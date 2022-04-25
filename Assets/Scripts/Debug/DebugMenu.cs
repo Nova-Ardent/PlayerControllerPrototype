@@ -22,26 +22,25 @@ namespace DebugMenu
 
         void Start()
         {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             if (!Controller.controllersAreSetup)
             {
                 Controller.SetupControllers(callouts);
                 Controller.SetControllerType(Controller.ControllerType.keyboard);
             }
 
+            debugMenuPanels = new DebugMenuPanel[0];
+
+            RegisterDefaultPanels();
+#endif
             if (Instance != null)
             {
                 Debug.LogWarning("more than one debugmenu exists, destroying later instantiations.");
                 Destroy(this.gameObject);
                 return;
             }
-            else
-            {
-                Instance = this;
-            }
 
-            debugMenuPanels = new DebugMenuPanel[0];
-            RegisterDefaultPanels();
-
+            Instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
 
@@ -115,6 +114,7 @@ namespace DebugMenu
 
         public void RegisterPanel(string title, object from, params DebugOption[] debugOptions)
         {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             if (debugMenuPanels.Any(x => x.title.Equals(title), out int index))
             {
                 debugMenuPanels[index]
@@ -124,18 +124,22 @@ namespace DebugMenu
             debugMenuPanels = debugMenuPanels
                 .Append(new DebugMenuPanel(title, debugOptions))
                 .ToArray();
+#endif
         }
 
         public void UnRegisterPanel(string title)
         {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             debugMenuPanels = debugMenuPanels
                 .Where(x => !x.Equals(title))
                 .ToArray();
+#endif
         }
 
         public void UnRegisterPanel(string title, object from)
         {
-
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+#endif
         }
     }
 }

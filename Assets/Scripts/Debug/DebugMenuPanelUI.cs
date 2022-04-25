@@ -52,6 +52,14 @@ namespace DebugMenu
 
         }
 
+        private void Update()
+        {
+            foreach (var option in activeOptions)
+            {
+                option.UpdateData();
+            }
+        }
+
         public void LoadPageData(DebugMenuPanel debugMenuPanel, int page, int totalPages)
         {
             panelOffset = 0;

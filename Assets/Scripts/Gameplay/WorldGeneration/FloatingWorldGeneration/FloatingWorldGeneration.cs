@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using System;
 
 namespace WorldGen
 {
@@ -18,6 +20,7 @@ namespace WorldGen
             None,
             InitializeHeightMap,
             DiamondSquare,
+            MirrorOffsetting,
             TranslateTopTerrain,
             BooleanIntercection,
             RemoveNeighbourlessPoints,
@@ -37,16 +40,19 @@ namespace WorldGen
         [SerializeField] WorldData worldData;
 
         [Header("generation data")]
+        public string islandName = "";
         public int edgeThickness;
         public int edgecleaningIterations;
         public TopTranslation topTranslation;
         public float topTranslationValue;
         public int topTranslationIterations;
+        public bool disableLODs;
 
         [SerializeField] GenerationData topGenerationData;
         [SerializeField] GenerationData bottomGenerationData;
         [SerializeField] WorldTile worldTile;
         [SerializeField] Material material;
+        [SerializeField] Camera camera;
 
         State state;
         FloatingWorldEditable floatingWorldEditable;
@@ -56,6 +62,12 @@ namespace WorldGen
         {
             WorldGen.Generation.SetSeed(worldData.seed);
             state = State.InitializeHeightMap;
+            if (camera == null)
+            {
+                camera = Camera.main;
+            }
+
+            RegisterDebug();
         }
 
         void Update()
@@ -67,10 +79,13 @@ namespace WorldGen
         {
             switch (state)
             {
-                case State.Done: break;
+                case State.Done:
+                    Destroy(this);
+                    break;
                 case State.None: break;
                 case State.InitializeHeightMap: InitializeHeightmap(); break;
                 case State.DiamondSquare: DiamondSquare(); break;
+                case State.MirrorOffsetting: MirrorOffsetTerrain(); break;
                 case State.TranslateTopTerrain: TranslateTopTerrain(); break;
                 case State.BooleanIntercection: BooleanIntercept(); break;
                 case State.RemoveNeighbourlessPoints: RemovePoorNeighbours(); break;
@@ -133,6 +148,14 @@ namespace WorldGen
             }
         }
 
+        void MirrorOffsetTerrain()
+        {
+            Utilities.Time(() =>
+            {
+                floatingWorldEditable.MirrorOffsetTerrain();
+            }, state);
+        }
+
         void BooleanIntercept()
         {
             Utilities.Time(() =>
@@ -170,8 +193,28 @@ namespace WorldGen
 
             Utilities.Time(() =>
             {
-                floatingWorldEditable.GetWorldTiles(top.transform, bottom.transform, worldTile, material);
+                var worldTiles = floatingWorldEditable.GetWorldTiles(top.transform, bottom.transform, worldTile, material);
+                for (int x = 0; x < worldTiles.GetLength(0); x++)
+                {
+                    for (int y = 0; y < worldTiles.GetLength(1); y++)
+                    {
+                        if (disableLODs)
+                        {
+                            worldTiles[x, y].Item1.DisableLOD();
+                            worldTiles[x, y].Item2.DisableLOD();
+                        }
+                    }
+                }
             }, state);
+        }
+
+        void RegisterDebug()
+        {
+            DebugMenu.DebugMenu.Instance.RegisterPanel
+            ("floating world generation"
+            , this
+            , new DebugMenu.DebugOption("camera pos;", () => camera.transform.position.ToString())
+            );
         }
     }
 }
