@@ -72,19 +72,21 @@ public class LocalCharacter : CharacterBase
         }
     }
 
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
     void RegisterDebug()
     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         DebugMenu.DebugMenu.Instance.RegisterPanel
         ("Player", this
         , new DebugMenu.DebugOption("name: ", characterData.name)
         , new DebugMenu.DebugOption("pizza is cool", "he likes pizza")
         );
+#endif
     }
 
     void UnregisterDebug()
     {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         DebugMenu.DebugMenu.Instance.UnRegisterPanel("Player");
-    }
 #endif
+    }
 }

@@ -44,6 +44,7 @@ namespace DebugMenu
             DontDestroyOnLoad(this.gameObject);
         }
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         private void Update()
         {
             if (Controller.debugMenuOpen)
@@ -99,6 +100,7 @@ namespace DebugMenu
                 debugMenuPanelUI.UpPress();
             }
         }
+#endif
 
         void RegisterDefaultPanels()
         {

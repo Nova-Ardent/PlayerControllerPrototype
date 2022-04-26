@@ -320,6 +320,7 @@ public static class Controller
         SetupButtonAxis(InputAlias.MouseVertical, Controls.CameraVertical, callouts?.mouse);
         SetupButtonAxis(InputAlias.MouseHorizontal, Controls.CameraHorizontal, callouts?.mouse);
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         SetupButtonDown(KeyCode.BackQuote, Controls.DebugMenuOpen, null);
         SetupButtonDown(KeyCode.Escape, Controls.DebugMenuClose, null);
         SetupButtonDown(KeyCode.UpArrow, Controls.DebugUp, null);
@@ -328,6 +329,7 @@ public static class Controller
         SetupButtonDown(KeyCode.LeftArrow, Controls.DebugLeft, null);
         SetupButtonDown(KeyCode.PageUp, Controls.DebugPageUp, null);
         SetupButtonDown(KeyCode.PageDown, Controls.DebugPageDown, null);
+#endif
     }
 
     static void SetupXbox()
