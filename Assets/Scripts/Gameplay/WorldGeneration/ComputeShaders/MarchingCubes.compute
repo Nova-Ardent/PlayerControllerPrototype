@@ -21,9 +21,15 @@ int indexFromCoord(int x, int y, int z)
     return z * numPointsPerAxis * numPointsPerAxis + y * numPointsPerAxis + x;
 }
 
+float4 GetVertIntensity(int x, int y, int z)
+{
+    float intensity = points[indexFromCoord(x, z, y)];
+    return float4(float3(x, y, z) * intensity, intensity);
+}
+
 float4 vertexAndIntensity(int x, int y, int z)
 {
-    return float4(x, y, z, points[indexFromCoord(x, y, z)]);
+    return float4(x, y, z, points[indexFromCoord(x, z, y)]);
 }
 
 float3 interpolateVerts(float4 v1, float4 v2)

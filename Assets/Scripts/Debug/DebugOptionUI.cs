@@ -34,7 +34,7 @@ namespace DebugMenu
 
     public class DebugOptionUI : MonoBehaviour
     {
-        bool _highlighted;
+        protected bool _highlighted;
         public bool highlighted
         {
             get => _highlighted;
@@ -45,7 +45,7 @@ namespace DebugMenu
             }
         }
 
-        DebugOption debugOption;
+        private DebugOption debugOption;
         public TextMeshProUGUI title;
         public TextMeshProUGUI description;
 
@@ -59,7 +59,7 @@ namespace DebugMenu
         public DebugOptionUI downOption;
         //public DebugOptionUI leftOption;
 
-        public void UpdateData()
+        public virtual void UpdateData()
         {
             title.text = debugOption.name;
             description.text = debugOption.description();

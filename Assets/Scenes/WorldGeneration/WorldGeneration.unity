@@ -769,7 +769,7 @@ MonoBehaviour:
     width: 16
     edgeThickness: 1
     chunkAxisSize: 32
-    iso: 0.01
+    iso: 0.05
     sharedMaterial: {fileID: 2100000, guid: 3fd17dd0bf4984348979ed19195a7218, type: 2}
     computeShader: {fileID: 7200000, guid: fdaf12cdf0186744aaf1cdd992678324, type: 3}
     computeThreadsX: 8
@@ -2932,6 +2932,10 @@ PrefabInstance:
       propertyPath: camera
       value: 
       objectReference: {fileID: 1676261484}
+    - target: {fileID: 10947768339228695, guid: 98d4ff5b05e774549a5aff140599d775, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 10947768339228695, guid: 98d4ff5b05e774549a5aff140599d775, type: 3}
       propertyPath: worldData.tiles
       value: 16

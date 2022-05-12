@@ -222,8 +222,8 @@ namespace WorldGen
             {
                 for (int y = 1; y < h - 1; y++)
                 {
-                    topHeightValues[x, y] -= min;
-                    bottomHeightValues[x, y] -= min;
+                    topHeightValues[x, y] -= min - 1;
+                    bottomHeightValues[x, y] -= min - 1;
                 }
             }
         }

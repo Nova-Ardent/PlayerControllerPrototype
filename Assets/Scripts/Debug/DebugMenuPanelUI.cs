@@ -35,6 +35,7 @@ namespace DebugMenu
         [System.Serializable]
         public class DebugOptions
         {
+            public DebugOptionActionUI debugOptionActionUI;
             public DebugOptionUI debugOptionUI;
         }
 
@@ -106,10 +107,15 @@ namespace DebugMenu
 
         DebugOptionUI GenerateOption(DebugOption option)
         {
-            DebugOptionUI debugOptionUI;
+            if (option is DebugOptionAction actionOption)
+            {
+                var actionOptionUI = Instantiate(debugOptions.debugOptionActionUI, this.transform);
+                actionOptionUI.ApplyData(actionOption);
+                return actionOptionUI;
+            }
             if (option is DebugOption)
             {
-                debugOptionUI = Instantiate(debugOptions.debugOptionUI, this.transform);
+                var debugOptionUI = Instantiate(debugOptions.debugOptionUI, this.transform);
                 debugOptionUI.ApplyData(option);
                 return debugOptionUI;
             }

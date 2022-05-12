@@ -35,6 +35,7 @@ public static class Controller
         DebugLeft,
         DebugPageUp,
         DebugPageDown,
+        DebugEnter,
     }
 
     public enum KeyType
@@ -329,6 +330,9 @@ public static class Controller
         SetupButtonDown(KeyCode.LeftArrow, Controls.DebugLeft, null);
         SetupButtonDown(KeyCode.PageUp, Controls.DebugPageUp, null);
         SetupButtonDown(KeyCode.PageDown, Controls.DebugPageDown, null);
+
+        SetupButtonDown(KeyCode.Return, Controls.DebugEnter, null);
+        SetupButtonUp(KeyCode.Return, Controls.DebugEnter, null);
 #endif
     }
 
@@ -356,6 +360,7 @@ public static class Controller
         RegisterDebugAsButton(Controls.DebugLeft, KeyType.Debug);
         RegisterDebugAsButton(Controls.DebugPageUp, KeyType.Debug);
         RegisterDebugAsButton(Controls.DebugPageDown, KeyType.Debug);
+        RegisterDebugAsButton(Controls.DebugEnter, KeyType.Debug);
     }
 
     static bool DebugWillEatInput(Controls control)

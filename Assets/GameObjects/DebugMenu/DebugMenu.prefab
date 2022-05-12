@@ -502,8 +502,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db514d89a8259f84784fae56749c5dd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialOffset: -80
   page: {fileID: 2372610784905901344}
   title: {fileID: 7471758358400843402}
   debugOptions:
+    debugOptionActionUI: {fileID: 3271831330094706173, guid: 6624df1f66aec1241a5c7fc3a5411bce, type: 3}
     debugOptionUI: {fileID: 5372482736643570905, guid: 82b86fddb1d3ee04ab8ceaae92573835, type: 3}

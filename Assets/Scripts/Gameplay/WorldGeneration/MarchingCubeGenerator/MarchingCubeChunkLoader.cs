@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine;
+using UnityEditor;
+using System.Collections;
+
 
 namespace WorldGen
 {
@@ -91,6 +95,7 @@ namespace WorldGen
         void Start()
         {
             Init();
+            RegisterDebug();
         }
 
         private void OnDestroy()
@@ -167,7 +172,7 @@ namespace WorldGen
                     int indexY = y % worldData.chunkAxisSize;
                     int chunkY = y / worldData.chunkAxisSize + worldData.edgeThickness;
 
-                    for (int z = (int)fwe.bottomHeightValues[x, y]; z < fwe.topHeightValues[x, y]; z++)
+                    for (int z = Mathf.CeilToInt(fwe.bottomHeightValues[x, y]); z < fwe.topHeightValues[x, y]; z++)
                     {
                         int indexZ = z % worldData.chunkAxisSize;
                         int chunkZ = z / worldData.chunkAxisSize;
@@ -179,8 +184,49 @@ namespace WorldGen
 
                         marchingCubeChunks[chunkX, chunkY][chunkZ][indexX, indexY, indexZ] = 1;
                     }
+
+                    var topPoint = Mathf.CeilToInt(fwe.topHeightValues[x, y]);
+                    var bottomPoint = (int)fwe.bottomHeightValues[x, y];
+
+                    int topI = topPoint % worldData.chunkAxisSize;
+                    int topC = topPoint / worldData.chunkAxisSize;
+
+                    int bottomI = bottomPoint % worldData.chunkAxisSize;
+                    int bottomC = bottomPoint / worldData.chunkAxisSize;
+
+                    var topVal = topPoint - fwe.topHeightValues[x, y];
+                    var botVal = Mathf.Abs(bottomPoint - fwe.bottomHeightValues[x, y]);
+
+                    if (!marchingCubeChunks[chunkX, chunkY].ContainsKey(topC))
+                    {
+                        marchingCubeChunks[chunkX, chunkY][topC] = new MarchingCubeChunkData(worldData.chunkAxisSize);
+                    }
+
+                    if (!marchingCubeChunks[chunkX, chunkY].ContainsKey(bottomC))
+                    {
+                        marchingCubeChunks[chunkX, chunkY][bottomC] = new MarchingCubeChunkData(worldData.chunkAxisSize);
+                    }
+
+                    marchingCubeChunks[chunkX, chunkY][topC][indexX, indexY, topI] = topVal;
+                    marchingCubeChunks[chunkX, chunkY][bottomC][indexX, indexY, bottomI] = botVal;
                 }
             }
+        }
+
+        public void RegenerateAllChunks()
+        {
+            List<Transform> tforms = new List<Transform>();
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                tforms.Add(transform.GetChild(i));
+            }
+
+            foreach (var child in tforms)
+            {
+                Destroy(child.gameObject);
+            }
+
+            GenerateAllChunks();
         }
 
         public void GenerateAllChunks()
@@ -237,7 +283,7 @@ namespace WorldGen
             meshFilter.mesh = GetChunkMesh(x, y, z);
 
             chunk.transform.SetParent(this.transform);
-            chunk.transform.localPosition = new Vector3(x, y, z) * worldData.chunkAxisSize;
+            chunk.transform.localPosition = new Vector3(x, z, y) * worldData.chunkAxisSize;
             chunk.isStatic = true;
         }
 
@@ -356,6 +402,19 @@ namespace WorldGen
             }
 
             return worldData.pointsArray;
+        }
+
+        public void RegisterDebug()
+        {
+            string lastPressed = "last pressed";
+            DebugMenu.DebugMenu.Instance.RegisterPanel
+                ( "marching cubes"
+                , new DebugMenu.DebugOptionAction("regenerate chunks", () => lastPressed, () =>
+                    {
+                        lastPressed = DateTime.Now.ToString();
+                        RegenerateAllChunks();
+                    })
+                );
         }
 #endregion
     }
