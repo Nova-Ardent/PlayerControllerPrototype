@@ -25,6 +25,7 @@ namespace WorldGen
             BooleanIntercection,
             RemoveNeighbourlessPoints,
             MergeEdges,
+            AllPointsAboveZero,
             GenerateMeshes,
             Done,
         }
@@ -56,6 +57,7 @@ namespace WorldGen
 
         State state;
         FloatingWorldEditable floatingWorldEditable;
+        [SerializeField] MarchingCubeChunkLoader marchingCubeChunkLoader;
 
         // Start is called before the first frame update
         void Start()
@@ -66,8 +68,6 @@ namespace WorldGen
             {
                 camera = Camera.main;
             }
-
-            RegisterDebug();
         }
 
         void Update()
@@ -90,6 +90,7 @@ namespace WorldGen
                 case State.BooleanIntercection: BooleanIntercept(); break;
                 case State.RemoveNeighbourlessPoints: RemovePoorNeighbours(); break;
                 case State.MergeEdges: MergeEdges(); break;
+                case State.AllPointsAboveZero: AllPointsAboveZero(); break;
                 case State.GenerateMeshes: GenerateMeshes(); break;
             }
 
@@ -183,38 +184,25 @@ namespace WorldGen
             }, state);
         }
 
-        void GenerateMeshes()
+        void AllPointsAboveZero()
         {
-            var top = new GameObject("top");
-            var bottom = new GameObject("bottom");
-
-            top.transform.SetParent(this.transform);
-            bottom.transform.SetParent(this.transform);
-
             Utilities.Time(() =>
             {
-                var worldTiles = floatingWorldEditable.GetWorldTiles(top.transform, bottom.transform, worldTile, material);
-                for (int x = 0; x < worldTiles.GetLength(0); x++)
-                {
-                    for (int y = 0; y < worldTiles.GetLength(1); y++)
-                    {
-                        if (disableLODs)
-                        {
-                            worldTiles[x, y].Item1.DisableLOD();
-                            worldTiles[x, y].Item2.DisableLOD();
-                        }
-                    }
-                }
+                floatingWorldEditable.TranslateAboveZero();
             }, state);
         }
 
-        void RegisterDebug()
+        void GenerateMeshes()
         {
-            DebugMenu.DebugMenu.Instance.RegisterPanel
-            ("floating world generation"
-            , this
-            , new DebugMenu.DebugOption("camera pos;", () => camera.transform.position.ToString())
-            );
+            Utilities.Time(() =>
+            {
+                marchingCubeChunkLoader.LoadPointsFromFloatingWorld(floatingWorldEditable);
+            }, $"{state} p1");
+
+            Utilities.Time(() =>
+            {
+                marchingCubeChunkLoader.GenerateAllChunks();
+            }, $"{state} p2");
         }
     }
 }

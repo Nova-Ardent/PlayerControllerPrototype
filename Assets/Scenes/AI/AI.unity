@@ -175,10 +175,27 @@ MonoBehaviour:
     seed: 
     AITestingWorld: 1
   generationData:
+    sinIntensity: 0
     diamondSquare: 1
     diamondSquareRoughness: 300
     blurring: 0
     blurringIntensity: 0
+    erode: 0
+    erosion:
+      erosion: {fileID: 0}
+      numErosionIterations: 50000
+      erosionBrushRadius: 3
+      maxLifetime: 30
+      sedimentCapacityFactor: 3
+      minSedimentCapacity: 0.01
+      depositSpeed: 0.3
+      erodeSpeed: 0.3
+      evaporateSpeed: 0.01
+      gravity: 4
+      startSpeed: 1
+      startWater: 1
+      inertia: 0.3
+      segmentDivs: 256
   worldTile: {fileID: 7190603839282132848, guid: 05ef611695d63c344b09f71b91326910, type: 3}
   material: {fileID: 2100000, guid: 3fd17dd0bf4984348979ed19195a7218, type: 2}
 --- !u!1 &1494954655
@@ -1240,7 +1257,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d8492cc288ab6b46a57e6c9a55c743a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  world: {fileID: 1119471787}
 --- !u!4 &3917928102908239784
 Transform:
   m_ObjectHideFlags: 0

@@ -180,6 +180,8 @@ namespace WorldGen
 
                 GameObject lod = new GameObject($"LOD {i}");
 
+
+
                 var meshRenderer = lod.AddComponent<MeshRenderer>();
                 meshRenderer.sharedMaterial = sharedMaterial;
 

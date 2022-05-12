@@ -116,6 +116,15 @@ public static class Utilities
         return defaultValue;
     }
 
+    public static V GetOrDefault<T, V>(this Dictionary<T, V> keyValuePairs, T key, V defaultValue)
+    {
+        if (keyValuePairs.ContainsKey(key))
+        {
+            return keyValuePairs[key];
+        }
+        return defaultValue;
+    }
+
     public static TAttribute GetAttribute<TAttribute>(this Enum value) where TAttribute : Attribute
     {
         var enumType = value.GetType();
