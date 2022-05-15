@@ -29,10 +29,4 @@ public class DebugMenuExample : MonoBehaviour
             , new DebugMenuEnum<Test>("enum test", Test.Option3, (x) => { Debug.Log($"enum increment to: {x}"); } )
             );
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

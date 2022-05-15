@@ -46,11 +46,13 @@ namespace WorldGen
             [Range(1, 10)]
             public int edgeThickness;
             public int chunkAxisSize;
+            public int readoutBlending;
             public float iso;
 
             [NonSerialized] public int fullLength;
             [NonSerialized] public int fullWidth;
             [NonSerialized] public int chunkAxisReadoutSize;
+            [NonSerialized] public int chunkAxsReadoutBlendSize;
 
             public Material sharedMaterial;
             
@@ -71,11 +73,12 @@ namespace WorldGen
                 fullLength = length + edgeThickness * 2;
                 fullWidth = width + edgeThickness * 2;
                 chunkAxisReadoutSize = chunkAxisSize + 1;
+                chunkAxsReadoutBlendSize = chunkAxisReadoutSize + readoutBlending * 2;
 
                 shaderKernel = computeShader.FindKernel("March");
-                pointsArray = new float[chunkAxisReadoutSize * chunkAxisReadoutSize * chunkAxisReadoutSize];
-                zeroedPointsArray = new float[chunkAxisReadoutSize * chunkAxisReadoutSize * chunkAxisReadoutSize];
-                pointsBuffer = new ComputeBuffer(chunkAxisReadoutSize * chunkAxisReadoutSize * chunkAxisReadoutSize, sizeof(float));
+                pointsArray = new float[chunkAxsReadoutBlendSize * chunkAxsReadoutBlendSize * chunkAxsReadoutBlendSize];
+                zeroedPointsArray = new float[chunkAxsReadoutBlendSize * chunkAxsReadoutBlendSize * chunkAxsReadoutBlendSize];
+                pointsBuffer = new ComputeBuffer(chunkAxsReadoutBlendSize * chunkAxsReadoutBlendSize * chunkAxsReadoutBlendSize, sizeof(float));
                 triangleBuffer = new ComputeBuffer(chunkAxisReadoutSize * chunkAxisReadoutSize * chunkAxisReadoutSize * 5, sizeof(float) * 3 * 3, ComputeBufferType.Append);
                 triCountBuffer = new ComputeBuffer(1, sizeof(int), ComputeBufferType.Raw);
                 zeroChunkRef = new MarchingCubesZerosChunk();
@@ -95,9 +98,6 @@ namespace WorldGen
         void Start()
         {
             Init();
-            this[0, 0, 0] = 1;
-            this[0, 0, 0] = 1;
-            GenerateAllChunks();
             RegisterDebug();
         }
 
@@ -185,10 +185,10 @@ namespace WorldGen
                             marchingCubeChunks[chunkX, chunkY][chunkZ] = new MarchingCubeChunkData(worldData.chunkAxisSize);
                         }
 
-                        marchingCubeChunks[chunkX, chunkY][chunkZ][indexX, indexY, indexZ] = 255;
+                        marchingCubeChunks[chunkX, chunkY][chunkZ][indexX, indexY, indexZ] = 2;
                     }
 
-                    /*var topPoint = Mathf.CeilToInt(fwe.topHeightValues[x, y]);
+                    var topPoint = Mathf.CeilToInt(fwe.topHeightValues[x, y]);
                     var bottomPoint = (int)fwe.bottomHeightValues[x, y];
 
                     int topI = topPoint % worldData.chunkAxisSize;
@@ -211,7 +211,7 @@ namespace WorldGen
                     }
 
                     marchingCubeChunks[chunkX, chunkY][topC][indexX, indexY, topI] = topVal;
-                    marchingCubeChunks[chunkX, chunkY][bottomC][indexX, indexY, bottomI] = botVal;*/
+                    marchingCubeChunks[chunkX, chunkY][bottomC][indexX, indexY, bottomI] = botVal;
                 }
             }
         }
@@ -303,6 +303,8 @@ namespace WorldGen
             worldData.computeShader.SetBuffer(0, "points", worldData.pointsBuffer);
             worldData.computeShader.SetBuffer(0, "triangles", worldData.triangleBuffer);
             worldData.computeShader.SetInt("numPointsPerAxis", worldData.chunkAxisReadoutSize);
+            worldData.computeShader.SetInt("edgeThickness", worldData.readoutBlending);
+            worldData.computeShader.SetInt("numPointsWithThickness", worldData.chunkAxsReadoutBlendSize);
             worldData.computeShader.SetFloat("isoLevel", worldData.iso);
 
             worldData.computeShader.Dispatch(worldData.shaderKernel, numThreadsPerAxisX, numThreadsPerAxisY, numThreadsPerAxisZ);
@@ -338,7 +340,7 @@ namespace WorldGen
 
         float[] updateAndGetChunkPoints(int x, int y, int z)
         {
-            bool empty = true;
+            /*bool empty = true;
             MarchingCubesChunkBase[,,] chunks = new MarchingCubesChunkBase[2, 2, 2];
             for (int i = 0; i < 2; i++)
             {
@@ -402,7 +404,27 @@ namespace WorldGen
                         worldData.pointsArray[i + yp + zp] = chunks[xc, yc, zc][xv, yv, zv];
                     }
                 }
+            }*/
+            var cas = worldData.chunkAxisSize;
+            var crs = worldData.chunkAxsReadoutBlendSize;
+            for (int i = 0; i < crs; i++)
+            {
+                for (int j = 0; j < crs; j++)
+                {
+                    for (int k = 0; k < crs; k++)
+                    {
+                        if (x * cas + i - 1 < 0 || y * cas + j - 1 < 0 || z * cas + k - 1 < 0)
+                        {
+                            worldData.pointsArray[i + j * crs + k * crs * crs] = 0;
+                            continue;
+                        }
+
+                        worldData.pointsArray[i + j * crs + k * crs * crs] = 
+                            this[x * cas + i - 1, y * cas + j - 1, z * cas + k - 1];
+                    }
+                }
             }
+
 
             return worldData.pointsArray;
         }

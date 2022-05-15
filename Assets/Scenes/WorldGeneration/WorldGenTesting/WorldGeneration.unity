@@ -769,7 +769,8 @@ MonoBehaviour:
     width: 16
     edgeThickness: 1
     chunkAxisSize: 32
-    iso: 0.05
+    readoutBlending: 5
+    iso: 1
     sharedMaterial: {fileID: 2100000, guid: 3fd17dd0bf4984348979ed19195a7218, type: 2}
     computeShader: {fileID: 7200000, guid: fdaf12cdf0186744aaf1cdd992678324, type: 3}
     computeThreadsX: 8
@@ -2947,6 +2948,10 @@ PrefabInstance:
     - target: {fileID: 10947768339228695, guid: 98d4ff5b05e774549a5aff140599d775, type: 3}
       propertyPath: worldData.tileScale
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 10947768339228695, guid: 98d4ff5b05e774549a5aff140599d775, type: 3}
+      propertyPath: edgecleaningIterations
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 10947768339228695, guid: 98d4ff5b05e774549a5aff140599d775, type: 3}
       propertyPath: marchingCubeChunkLoader
