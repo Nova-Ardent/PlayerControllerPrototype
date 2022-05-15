@@ -91,14 +91,13 @@ namespace WorldGen
             set => SetPoint(x, y, z, value);
         }
 
-        [SerializeField] Data worldData;
+        [SerializeField] public Data worldData;
         [SerializeField] MarchingCubeChunkLoader marchingCubeChunkLoader;
 
-        Dictionary<int , MarchingCubesChunkBase>[,] marchingCubeChunks;
+        MarchingCubesChunkColumn[,] marchingCubeChunks;
 
         void Start()
         {
-            Init();
             RegisterDebug();
         }
 
@@ -109,15 +108,15 @@ namespace WorldGen
             worldData.triCountBuffer.Release();
         }
 
-        void Init()
+        void Init(string seed, int worldsGenerated)
         {
             worldData.InitNonSerialziedData();
-            marchingCubeChunks = new Dictionary<int, MarchingCubesChunkBase>[worldData.fullLength, worldData.fullWidth];
+            marchingCubeChunks = new MarchingCubesChunkColumn[worldData.fullLength, worldData.fullWidth];
             for (int i = 0; i < worldData.fullLength; i++)
             {
                 for (int j = 0; j < worldData.fullWidth; j++)
                 {
-                    marchingCubeChunks[i, j] = new Dictionary<int, MarchingCubesChunkBase>();
+                    marchingCubeChunks[i, j] = new MarchingCubesChunkColumn(seed, worldsGenerated, i, j);
                 }
             }
         }
@@ -307,6 +306,11 @@ namespace WorldGen
 #region LoadingFunctionality
         public void LoadPointsFromFloatingWorld(FloatingWorldEditable fwe, string seed)
         {
+            marchingCubeChunkLoader.worldSeed = seed;
+            marchingCubeChunkLoader.worldsGenerated++;
+
+            Init(marchingCubeChunkLoader.worldSeed, marchingCubeChunkLoader.worldsGenerated);
+
             var lengthVerts = Mathf.Min(worldData.chunkAxisSize * worldData.length, fwe.topHeightValues.GetLength(0));
             var widthVerts = Mathf.Min(worldData.chunkAxisSize * worldData.width, fwe.topHeightValues.GetLength(0));
             for (int x = 0; x < lengthVerts; x++)
@@ -338,9 +342,22 @@ namespace WorldGen
                     }
                 }
             }
+        }
 
-            marchingCubeChunkLoader.worldSeed = seed;
-            marchingCubeChunkLoader.worldsGenerated++;
+        string Save()
+        {
+            string mainSave = SaveUtilities.SaveData(marchingCubeChunkLoader);
+            for (int i = 0; i < worldData.fullLength; i++)
+            {
+                for (int j = 0; j < worldData.fullWidth; j++)
+                {
+                    if (marchingCubeChunks[i, j].Any())
+                    {
+                        SaveUtilities.SaveData(marchingCubeChunks[i, j]);
+                    }
+                }
+            }
+            return mainSave;
         }
 #endregion
 #region Debug
@@ -356,7 +373,7 @@ namespace WorldGen
                         lastPressed = DateTime.Now.ToString();
                         RegenerateAllChunks();
                     })
-                , new DebugOptionAction("Save current world", () => savedPath, () => savedPath = SaveUtilities.SaveData(marchingCubeChunkLoader))
+                , new DebugOptionAction("Save current world", () => savedPath, () => savedPath = Save())
                 );
         }
 #endregion

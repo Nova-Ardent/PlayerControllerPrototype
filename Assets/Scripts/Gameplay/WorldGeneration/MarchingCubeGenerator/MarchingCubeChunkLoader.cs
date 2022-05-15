@@ -24,8 +24,22 @@ namespace WorldGen
             byte[] seed = Encoding.ASCII.GetBytes(worldSeed + worldsGenerated);
             byte[] seedLength = BitConverter.GetBytes(seed.Length);
 
+            byte[] chunkLen = BitConverter.GetBytes(marchingCubeChunkGenerator.worldData.length);
+            byte[] chunkWid = BitConverter.GetBytes(marchingCubeChunkGenerator.worldData.width);
+            byte[] chunkAxisSize = BitConverter.GetBytes(marchingCubeChunkGenerator.worldData.chunkAxisSize);
+            byte[] iso = BitConverter.GetBytes(marchingCubeChunkGenerator.worldData.iso);
+
             return seedLength
-                .Concat(seed);
+                .Concat(seed)
+                .Concat(chunkLen)
+                .Concat(chunkWid)
+                .Concat(chunkAxisSize)
+                .Concat(iso);
+        }
+
+        int ISaveable.SetSavedData(byte[] nextBytes, int version)
+        {
+            return 0;
         }
     }
 }

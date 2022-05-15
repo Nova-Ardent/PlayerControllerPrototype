@@ -4,6 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using System.IO;
 using System.Linq;
+using System;
 
 public static class SaveUtilities
 {
@@ -19,6 +20,11 @@ public static class SaveUtilities
         var filePath = Path.Combine(saveable.SavePath.Prepend(Application.persistentDataPath).Append(saveable.SaveFile).ToArray());
 
         FileStream file = File.Create(filePath);
+        foreach (var version in BitConverter.GetBytes(saveable.Version))
+        {
+            file.WriteByte(version);
+        }
+
         foreach (var b in saveable.GetSavedData())
         {
             file.WriteByte(b);

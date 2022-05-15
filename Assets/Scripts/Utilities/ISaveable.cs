@@ -8,4 +8,5 @@ public interface ISaveable
     public string SaveFile { get; }
     public int Version { get; }
     public IEnumerable<byte> GetSavedData();
+    public int SetSavedData(byte[] nextBytes, int version);
 }
