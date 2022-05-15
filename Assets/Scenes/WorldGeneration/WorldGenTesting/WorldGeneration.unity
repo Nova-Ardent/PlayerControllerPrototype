@@ -746,7 +746,7 @@ GameObject:
   - component: {fileID: 650976893}
   - component: {fileID: 650976892}
   m_Layer: 0
-  m_Name: MarchingCubeChunkLoader
+  m_Name: MarchingCubeChunkGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -765,17 +765,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldData:
-    length: 16
-    width: 16
+    length: 32
+    width: 32
     edgeThickness: 1
-    chunkAxisSize: 32
-    readoutBlending: 5
+    chunkAxisSize: 16
     iso: 1
     sharedMaterial: {fileID: 2100000, guid: 3fd17dd0bf4984348979ed19195a7218, type: 2}
     computeShader: {fileID: 7200000, guid: fdaf12cdf0186744aaf1cdd992678324, type: 3}
     computeThreadsX: 8
     computeThreadsY: 8
     computeThreadsZ: 8
+  marchingCubeChunkLoader:
+    worldSeed: 
+    worldsGenerated: 0
+    marchingCubeChunkGenerator: {fileID: 650976892}
 --- !u!4 &650976893
 Transform:
   m_ObjectHideFlags: 0
@@ -993,14 +996,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 667646668}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 185.57913, y: -51.178158, z: 138.29}
+  m_LocalRotation: {x: -0, y: -0.9998672, z: -0, w: -0.016299902}
+  m_LocalPosition: {x: 258.545, y: 61.819, z: 118.1}
   m_LocalScale: {x: 0.31, y: 0.31, z: 0.31}
   m_Children:
   - {fileID: 745554709}
   m_Father: {fileID: 0}
   m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -181.868, z: 0}
 --- !u!1 &683012970
 GameObject:
   m_ObjectHideFlags: 0
@@ -2938,6 +2941,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 10947768339228695, guid: 98d4ff5b05e774549a5aff140599d775, type: 3}
+      propertyPath: worldData.seed
+      value: Duckie
+      objectReference: {fileID: 0}
+    - target: {fileID: 10947768339228695, guid: 98d4ff5b05e774549a5aff140599d775, type: 3}
       propertyPath: worldData.tiles
       value: 16
       objectReference: {fileID: 0}
@@ -2963,7 +2970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 10947768339228695, guid: 98d4ff5b05e774549a5aff140599d775, type: 3}
       propertyPath: bottomGenerationData.diamondSquareRoughness
-      value: 180
+      value: 360
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98d4ff5b05e774549a5aff140599d775, type: 3}

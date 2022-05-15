@@ -57,7 +57,7 @@ namespace WorldGen
 
         State state;
         FloatingWorldEditable floatingWorldEditable;
-        [SerializeField] MarchingCubeChunkLoader marchingCubeChunkLoader;
+        [SerializeField] MarchingCubeChunkGenerator marchingCubeChunkLoader;
 
         // Start is called before the first frame update
         void Start()
@@ -196,7 +196,7 @@ namespace WorldGen
         {
             Utilities.Time(() =>
             {
-                marchingCubeChunkLoader.LoadPointsFromFloatingWorld(floatingWorldEditable);
+                marchingCubeChunkLoader.LoadPointsFromFloatingWorld(floatingWorldEditable, worldData.seed);
             }, $"{state} p1");
 
             Utilities.Time(() =>
