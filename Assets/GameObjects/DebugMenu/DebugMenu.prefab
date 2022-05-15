@@ -505,5 +505,6 @@ MonoBehaviour:
   page: {fileID: 2372610784905901344}
   title: {fileID: 7471758358400843402}
   debugOptions:
+    debugMenuOptionSliderUI: {fileID: -3182831182708505547, guid: 2cbc43faa0cb2b64c9299d2e5f471ce2, type: 3}
     debugOptionActionUI: {fileID: 3271831330094706173, guid: 6624df1f66aec1241a5c7fc3a5411bce, type: 3}
     debugOptionUI: {fileID: 5372482736643570905, guid: 82b86fddb1d3ee04ab8ceaae92573835, type: 3}

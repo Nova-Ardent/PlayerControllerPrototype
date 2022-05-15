@@ -95,6 +95,9 @@ namespace WorldGen
         void Start()
         {
             Init();
+            this[0, 0, 0] = 1;
+            this[0, 0, 0] = 1;
+            GenerateAllChunks();
             RegisterDebug();
         }
 
@@ -182,10 +185,10 @@ namespace WorldGen
                             marchingCubeChunks[chunkX, chunkY][chunkZ] = new MarchingCubeChunkData(worldData.chunkAxisSize);
                         }
 
-                        marchingCubeChunks[chunkX, chunkY][chunkZ][indexX, indexY, indexZ] = 1;
+                        marchingCubeChunks[chunkX, chunkY][chunkZ][indexX, indexY, indexZ] = 255;
                     }
 
-                    var topPoint = Mathf.CeilToInt(fwe.topHeightValues[x, y]);
+                    /*var topPoint = Mathf.CeilToInt(fwe.topHeightValues[x, y]);
                     var bottomPoint = (int)fwe.bottomHeightValues[x, y];
 
                     int topI = topPoint % worldData.chunkAxisSize;
@@ -208,7 +211,7 @@ namespace WorldGen
                     }
 
                     marchingCubeChunks[chunkX, chunkY][topC][indexX, indexY, topI] = topVal;
-                    marchingCubeChunks[chunkX, chunkY][bottomC][indexX, indexY, bottomI] = botVal;
+                    marchingCubeChunks[chunkX, chunkY][bottomC][indexX, indexY, bottomI] = botVal;*/
                 }
             }
         }

@@ -8,10 +8,16 @@ using static Controller;
 
 public abstract class ControllerBase
 {
+    public class PressDuration
+    {
+        public float timeOfPress;
+        public Func<float, bool>? heldAndDuration = (x) => { return false; };
+    }
+
     protected Dictionary<Controls, Sprite?[]> callouts = new Dictionary<Controls, Sprite?[]>();
     protected Dictionary<Controls, Func<bool>> downControls = new Dictionary<Controls, Func<bool>>();
     protected Dictionary<Controls, Func<bool>> upControls = new Dictionary<Controls, Func<bool>>();
-    protected Dictionary<Controls, Func<bool>> heldControls = new Dictionary<Controls, Func<bool>>();
+    protected Dictionary<Controls, PressDuration> heldControls = new Dictionary<Controls, PressDuration>();
     protected Dictionary<Controls, Func<float>> axis = new Dictionary<Controls, Func<float>>();
     public abstract ControllerType controllerType { get; }
 
@@ -73,14 +79,30 @@ public abstract class ControllerBase
     public virtual void SetupButtonHeld(KeyCode key, Controls control, Sprite? callout)
     {
         callouts[control] = new Sprite?[] { callout };
-        heldControls[control] = () =>
+
+        PressDuration val = new PressDuration();
+        val.timeOfPress = float.MaxValue;
+        val.heldAndDuration = (x) =>
         {
             if (currentControllerType == controllerType)
             {
-                return Input.GetKey(key);
+                if (Input.GetKeyDown(key))
+                {
+                    val.timeOfPress = Time.time;
+                }
+                else if (Input.GetKeyUp(key))
+                {
+                    val.timeOfPress = float.MaxValue;
+                }
+                else
+                {
+                    return Time.time - val.timeOfPress > x;
+                }
             }
             return false;
         };
+
+        heldControls[control] = val;
     }
 
     public virtual void SetupButtonDown(KeyCode key, Controls control, Sprite? callout)
@@ -112,14 +134,29 @@ public abstract class ControllerBase
     public virtual void SetupButtonHeld(string key, Controls control, Sprite? callout)
     {
         callouts[control] = new Sprite?[] { callout };
-        heldControls[control] = () =>
+        PressDuration val = new PressDuration();
+        val.timeOfPress = float.MaxValue;
+        val.heldAndDuration = (x) =>
         {
             if (currentControllerType == controllerType)
             {
-                return Input.GetKey(key);
+                if (Input.GetKeyDown(key))
+                {
+                    val.timeOfPress = Time.time;
+                }
+                else if (Input.GetKeyUp(key))
+                {
+                    val.timeOfPress = float.MaxValue;
+                }
+                else
+                {
+                    return Time.time - val.timeOfPress > x;
+                }
             }
             return false;
         };
+
+        heldControls[control] = val;
     }
 
     public virtual void SetupButtonDown(string key, Controls control, Sprite? callout)
@@ -153,14 +190,29 @@ public abstract class ControllerBase
         var aliasValue = Utilities.GetAttribute<InputAliasAttribute>(key)?.alias ?? "";
 
         callouts[control] = new Sprite?[] { callout };
-        heldControls[control] = () =>
+        PressDuration val = new PressDuration();
+        val.timeOfPress = float.MaxValue;
+        val.heldAndDuration = (x) =>
         {
             if (currentControllerType == controllerType)
             {
-                return Input.GetKey(aliasValue);
+                if (Input.GetKeyDown(aliasValue))
+                {
+                    val.timeOfPress = Time.time;
+                }
+                else if (Input.GetKeyUp(aliasValue))
+                {
+                    val.timeOfPress = float.MaxValue;
+                }
+                else
+                {
+                    return Time.time - val.timeOfPress > x;
+                }
             }
             return false;
         };
+
+        heldControls[control] = val;
     }
 
     public virtual void SetupButtonDown(InputAlias key, Controls control, Sprite? callout)
@@ -196,14 +248,29 @@ public abstract class ControllerBase
     public virtual void SetupMouseButtonHeld(int button, Controls control, Sprite? callout)
     {
         callouts[control] = new Sprite?[] { callout };
-        heldControls[control] = () =>
+        PressDuration val = new PressDuration();
+        val.timeOfPress = float.MaxValue;
+        val.heldAndDuration = (x) =>
         {
             if (currentControllerType == controllerType)
             {
-                return Input.GetMouseButton(button);
+                if (Input.GetMouseButtonDown(button))
+                {
+                    val.timeOfPress = Time.time;
+                }
+                else if (Input.GetMouseButtonUp(button))
+                {
+                    val.timeOfPress = float.MaxValue;
+                }
+                else
+                {
+                    return Time.time - val.timeOfPress > x;
+                }
             }
             return false;
         };
+
+        heldControls[control] = val;
     }
 
     public virtual void SetupMouseButtonDown(int button, Controls control, Sprite? callout)
@@ -237,9 +304,9 @@ public abstract class ControllerBase
         return callouts.ContainsKey(control) ? callouts[control] : new Sprite[] { };
     }
 
-    public bool GetKey(Controls control)
+    public bool GetKey(Controls control, float duration = 0)
     {
-        return heldControls.ContainsKey(control) ? heldControls[control].Invoke() : false;
+        return heldControls.ContainsKey(control) ? heldControls[control].heldAndDuration?.Invoke(duration) ?? false : false;
     }
 
     public bool GetKeyUp(Controls control)

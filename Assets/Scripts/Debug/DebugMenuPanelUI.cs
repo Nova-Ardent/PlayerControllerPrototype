@@ -35,6 +35,7 @@ namespace DebugMenu
         [System.Serializable]
         public class DebugOptions
         {
+            public DebugMenuSliderUI debugMenuOptionSliderUI;
             public DebugOptionActionUI debugOptionActionUI;
             public DebugOptionUI debugOptionUI;
         }
@@ -107,6 +108,12 @@ namespace DebugMenu
 
         DebugOptionUI GenerateOption(DebugOption option)
         {
+            if (option is DebugMenuSliderBase sliderOption)
+            {
+                var sliderOptionUI = Instantiate(debugOptions.debugMenuOptionSliderUI, this.transform);
+                sliderOptionUI.ApplyData(sliderOption);
+                return sliderOptionUI;
+            }
             if (option is DebugOptionAction actionOption)
             {
                 var actionOptionUI = Instantiate(debugOptions.debugOptionActionUI, this.transform);

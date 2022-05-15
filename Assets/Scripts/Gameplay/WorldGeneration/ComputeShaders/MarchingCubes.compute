@@ -21,6 +21,38 @@ int indexFromCoord(int x, int y, int z)
     return z * numPointsPerAxis * numPointsPerAxis + y * numPointsPerAxis + x;
 }
 
+float countNeighbours(int x, int y, int z)
+{
+    float neighbours = 0;
+    for (int i = -1; i < 2; i++)
+    {
+        for (int j = -1; j < 2; j++)
+        {
+            for (int k = -1; k < 2; k++)
+            {
+                if (i == 0 && j == 0 && k == 0)
+                {
+                    continue;
+                }
+                
+                float iso = points[indexFromCoord(x + i, y + j, z + k)];
+                if (iso > 0)
+                {
+                    neighbours = neighbours + 1.0;
+                }
+            }
+        }
+    }
+    
+    return neighbours;
+}
+
+float percentageNeighbours(int x, int y, int z)
+{
+    // 3^3 - 1
+    return 255 * points[indexFromCoord(x, y, z)] / 26.0;
+}
+
 float4 GetVertIntensity(int x, int y, int z)
 {
     float intensity = points[indexFromCoord(x, z, y)];
@@ -30,12 +62,14 @@ float4 GetVertIntensity(int x, int y, int z)
 float4 vertexAndIntensity(int x, int y, int z)
 {
     return float4(x, y, z, points[indexFromCoord(x, z, y)]);
+    //return float4(x, y, z, percentageNeighbours(x, z, y));
 }
 
 float3 interpolateVerts(float4 v1, float4 v2)
 {
     float t = (isoLevel - v1.w) / (v2.w - v1.w);
     return v1.xyz + t * (v2.xyz - v1.xyz);
+    //return (v1.xyz * v2.w + v2.xyz * v1.w) / (v1.w + v2.w);
 }
 
 [numthreads(numThreads, numThreads, numThreads)]

@@ -9,6 +9,17 @@ namespace DebugMenu
 {
     public class DebugOption
     {
+        public DebugOption()
+        {
+            this.name = "";
+            this.description = () => "";
+        }
+
+        public DebugOption(string name)
+        {
+            this.name = name;
+            this.description = () => "";
+        }
         public DebugOption(string name, string description)
         {
             this.name = name;

@@ -212,7 +212,7 @@ public static class Controller
     }
     #endregion
 #region Get
-    public static bool GetKey(Controls control)
+    public static bool GetKey(Controls control, float duration = 1.0f)
     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         if (DebugWillEatInput(control))
@@ -220,7 +220,7 @@ public static class Controller
             return false;
         }
 #endif 
-        return currentController?.GetKey(control) ?? false;
+        return currentController?.GetKey(control, duration) ?? false;
     }
 
     public static bool GetKeyUp(Controls control)
@@ -328,6 +328,9 @@ public static class Controller
         SetupButtonDown(KeyCode.RightArrow, Controls.DebugRight, null);
         SetupButtonDown(KeyCode.DownArrow, Controls.DebugDown, null);
         SetupButtonDown(KeyCode.LeftArrow, Controls.DebugLeft, null);
+        SetupButtonHeld(KeyCode.RightArrow, Controls.DebugRight, null);
+        SetupButtonHeld(KeyCode.LeftArrow, Controls.DebugLeft, null);
+
         SetupButtonDown(KeyCode.PageUp, Controls.DebugPageUp, null);
         SetupButtonDown(KeyCode.PageDown, Controls.DebugPageDown, null);
 
@@ -345,22 +348,22 @@ public static class Controller
     }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-    static void RegisterDebugAsButton(Controls control, KeyType keyType = KeyType.Debug)
+    static void RegisterAsDebugButton(Controls control, KeyType keyType = KeyType.Debug)
     {
         debugMenuControls[(int)control] = keyType;
     }
 
     static void DebugKeys()
     {
-        RegisterDebugAsButton(Controls.DebugMenuOpen, KeyType.Both);
-        RegisterDebugAsButton(Controls.DebugMenuClose, KeyType.Debug);
-        RegisterDebugAsButton(Controls.DebugUp, KeyType.Debug);
-        RegisterDebugAsButton(Controls.DebugRight, KeyType.Debug);
-        RegisterDebugAsButton(Controls.DebugDown, KeyType.Debug);
-        RegisterDebugAsButton(Controls.DebugLeft, KeyType.Debug);
-        RegisterDebugAsButton(Controls.DebugPageUp, KeyType.Debug);
-        RegisterDebugAsButton(Controls.DebugPageDown, KeyType.Debug);
-        RegisterDebugAsButton(Controls.DebugEnter, KeyType.Debug);
+        RegisterAsDebugButton(Controls.DebugMenuOpen, KeyType.Both);
+        RegisterAsDebugButton(Controls.DebugMenuClose, KeyType.Debug);
+        RegisterAsDebugButton(Controls.DebugUp, KeyType.Debug);
+        RegisterAsDebugButton(Controls.DebugRight, KeyType.Debug);
+        RegisterAsDebugButton(Controls.DebugDown, KeyType.Debug);
+        RegisterAsDebugButton(Controls.DebugLeft, KeyType.Debug);
+        RegisterAsDebugButton(Controls.DebugPageUp, KeyType.Debug);
+        RegisterAsDebugButton(Controls.DebugPageDown, KeyType.Debug);
+        RegisterAsDebugButton(Controls.DebugEnter, KeyType.Debug);
     }
 
     static bool DebugWillEatInput(Controls control)
