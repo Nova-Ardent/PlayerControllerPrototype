@@ -68,6 +68,8 @@ namespace WorldGen
             [NonSerialized] public float[] zeroedPointsArray;
             [NonSerialized] public MarchingCubesZerosChunk zeroChunkRef;
 
+            [NonSerialized] bool initialized = false;
+
             public void InitNonSerialziedData()
             {
                 fullLength = length + edgeThickness * 2;
@@ -82,6 +84,20 @@ namespace WorldGen
                 triangleBuffer = new ComputeBuffer(chunkAxisReadoutSize * chunkAxisReadoutSize * chunkAxisReadoutSize * 5, sizeof(float) * 3 * 3, ComputeBufferType.Append);
                 triCountBuffer = new ComputeBuffer(1, sizeof(int), ComputeBufferType.Raw);
                 zeroChunkRef = new MarchingCubesZerosChunk();
+
+                initialized = true;
+            }
+
+            public void DestroyData()
+            {
+                if (!initialized)
+                {
+                    return;
+                }
+
+                pointsBuffer.Release();
+                triangleBuffer.Release();
+                triCountBuffer.Release();
             }
         }
 
@@ -98,14 +114,13 @@ namespace WorldGen
 
         void Start()
         {
+            LoadWorld(MarchingCubeChunkLoader.GetWorldFolders().First());
             RegisterDebug();
         }
 
         private void OnDestroy()
         {
-            worldData.pointsBuffer.Release();
-            worldData.triangleBuffer.Release();
-            worldData.triCountBuffer.Release();
+            worldData.DestroyData();
         }
 
         void Init(string seed, int worldsGenerated)
@@ -358,6 +373,23 @@ namespace WorldGen
                 }
             }
             return mainSave;
+        }
+
+        void LoadWorld(string worldPath)
+        {
+            this.marchingCubeChunkLoader.worldSeed = worldPath.Split('\\').Last();
+            SaveUtilities.LoadData(this.marchingCubeChunkLoader);
+
+            Init(this.marchingCubeChunkLoader.worldSeed, this.marchingCubeChunkLoader.worldsGenerated);
+            for (int i = 0; i < worldData.fullLength; i++)
+            {
+                for (int j = 0; j < worldData.fullWidth; j++)
+                {
+                    SaveUtilities.LoadData(marchingCubeChunks[i, j]);
+                }
+            }
+
+            RegenerateAllChunks();
         }
 #endregion
 #region Debug

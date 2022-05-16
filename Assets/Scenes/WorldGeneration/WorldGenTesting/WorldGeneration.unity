@@ -2938,7 +2938,7 @@ PrefabInstance:
       objectReference: {fileID: 1676261484}
     - target: {fileID: 10947768339228695, guid: 98d4ff5b05e774549a5aff140599d775, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 10947768339228695, guid: 98d4ff5b05e774549a5aff140599d775, type: 3}
       propertyPath: worldData.seed

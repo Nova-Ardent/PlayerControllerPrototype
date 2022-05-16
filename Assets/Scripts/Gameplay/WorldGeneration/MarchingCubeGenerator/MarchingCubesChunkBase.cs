@@ -8,6 +8,7 @@ namespace WorldGen
             set;
         }
 
+        public int scale;
         public float[] points;
     }
 }

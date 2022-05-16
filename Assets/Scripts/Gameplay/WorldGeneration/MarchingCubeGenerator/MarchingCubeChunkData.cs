@@ -12,7 +12,6 @@ namespace WorldGen
             set => points[z * zOffset + y * yOffset + x] = value;
         }
 
-        int scale;
         int yOffset;
         int zOffset;
 
