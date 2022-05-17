@@ -70,12 +70,16 @@ namespace WorldGen
 
             [NonSerialized] bool initialized = false;
 
+            public const int AXIS_READOUT_BLEND_SIZE_OFFSET = 5;
+            [NonSerialized] public int[] readoutChunkDArray;
+            [NonSerialized] public int[] readoutChunkCArray;
+
             public void InitNonSerialziedData()
             {
                 fullLength = length + edgeThickness * 2;
                 fullWidth = width + edgeThickness * 2;
                 chunkAxisReadoutSize = chunkAxisSize + 1;
-                chunkAxsReadoutBlendSize = chunkAxisReadoutSize + 5 * 2;
+                chunkAxsReadoutBlendSize = chunkAxisReadoutSize + AXIS_READOUT_BLEND_SIZE_OFFSET * 2;
 
                 shaderKernel = computeShader.FindKernel("March");
                 pointsArray = new float[chunkAxsReadoutBlendSize * chunkAxsReadoutBlendSize * chunkAxsReadoutBlendSize];
@@ -86,6 +90,15 @@ namespace WorldGen
                 zeroChunkRef = new MarchingCubesZerosChunk();
 
                 initialized = true;
+
+                var chunkEdge = (chunkAxisSize - AXIS_READOUT_BLEND_SIZE_OFFSET);
+                readoutChunkDArray = new int[chunkAxsReadoutBlendSize];
+                readoutChunkCArray = new int[chunkAxsReadoutBlendSize];
+                for (int i = 0; i < chunkAxsReadoutBlendSize; i++)
+                {
+                    readoutChunkDArray[i] = (i + chunkEdge) % chunkAxisSize;
+                    readoutChunkCArray[i] = (i + chunkEdge) / chunkAxisSize;
+                }
             }
 
             public void DestroyData()
@@ -294,29 +307,50 @@ namespace WorldGen
 
         float[] updateAndGetChunkPoints(int x, int y, int z)
         {
+            MarchingCubesChunkBase[,,] neighbouringChunks = new MarchingCubesChunkBase[3,3,3];
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    for (int k = 0; k < 3; k++)
+                    {
+                        int dx = x + i - 1 + worldData.edgeThickness;
+                        int dy = y + j - 1 + worldData.edgeThickness;
+                        int dz = z + k - 1;
+                        if (dx < 0 || dy < 0 || dz < 0)
+                        {
+                            neighbouringChunks[i, j, k] = new MarchingCubesZerosChunk();
+                        }
+                        else if (marchingCubeChunks[dx, dy].ContainsKey(dz))
+                        {
+                            neighbouringChunks[i, j, k] = marchingCubeChunks[dx, dy][dz];
+                        }
+                        else
+                        {
+                            neighbouringChunks[i, j, k] = new MarchingCubesZerosChunk();
+                        }
+                    }
+                }
+            }
+
             var cas = worldData.chunkAxisSize;
             var crs = worldData.chunkAxsReadoutBlendSize;
+            var chunkEdge = (cas - Data.AXIS_READOUT_BLEND_SIZE_OFFSET);
             for (int i = 0; i < crs; i++)
             {
                 for (int j = 0; j < crs; j++)
                 {
                     for (int k = 0; k < crs; k++)
                     {
-                        if (x * cas + i - 1 < 0 || y * cas + j - 1 < 0 || z * cas + k - 1 < 0)
-                        {
-                            worldData.pointsArray[i + j * crs + k * crs * crs] = 0;
-                            continue;
-                        }
-
-                        worldData.pointsArray[i + j * crs + k * crs * crs] = 
-                            this[x * cas + i - 1, y * cas + j - 1, z * cas + k - 1];
+                        worldData.pointsArray[i + j * crs + k * crs * crs] =
+                            neighbouringChunks[worldData.readoutChunkCArray[i], worldData.readoutChunkCArray[j], worldData.readoutChunkCArray[k]][worldData.readoutChunkDArray[i], worldData.readoutChunkDArray[j], worldData.readoutChunkDArray[k]];
                     }
                 }
             }
 
-
             return worldData.pointsArray;
         }
+
 #endregion
 #region LoadingFunctionality
         public void LoadPointsFromFloatingWorld(FloatingWorldEditable fwe, string seed)

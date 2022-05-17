@@ -17,6 +17,11 @@ public class DebugMenuExample : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 0; i < 20; i++)
+        {
+            Debug.LogError($"{(i + (16 - 2)) % 16} -- {(i + (16 - 2)) / 16}");
+        }
+
         string lastPressed = "press me";
 
         DebugMenu.DebugMenu.Instance.RegisterPanel

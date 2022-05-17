@@ -42,6 +42,15 @@ namespace WorldGen
 
         int ISaveable.Version => 1;
 
+        public MarchingCubesChunkColumn(string seed, int worldGenerated, int x, int y)
+            : base()
+        {
+            this.worldSeed = seed;
+            this.worldsGenerated = worldGenerated;
+            this.x = x;
+            this.y = y;
+        }
+
         IEnumerable<byte> ISaveable.GetSavedData()
         {
             foreach (var key in Keys)
@@ -107,15 +116,6 @@ namespace WorldGen
         void ISaveable.OnStreamEnd()
         {
             loadingHelper.loadingState = LoadingState.StartOfStream;
-        }
-
-        public MarchingCubesChunkColumn(string seed, int worldGenerated, int x, int y)
-            : base()
-        {
-            this.worldSeed = seed;
-            this.worldsGenerated = worldGenerated;
-            this.x = x;
-            this.y = y;
         }
     }
 }
