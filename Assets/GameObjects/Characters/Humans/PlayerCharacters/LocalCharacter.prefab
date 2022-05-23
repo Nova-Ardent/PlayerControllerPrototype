@@ -714,7 +714,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3780993785029844478}
-  - component: {fileID: 3780993785029844479}
+  - component: {fileID: 1544315082342412613}
   m_Layer: 0
   m_Name: LocalCharacter
   m_TagString: Untagged
@@ -737,7 +737,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3780993785029844479
+--- !u!114 &1544315082342412613
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -746,10 +746,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 3780993785029844476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2de96437103a33f4ab4605f47920f8e0, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c5c0d71117e37b46891e10bbf1b5a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gender: 1
+  animator: {fileID: 7282985222937732928}
+  personBase: {fileID: 0}
+  lockOn: {fileID: 0}
+  characterData:
+    name: 
+  _gender: 0
   _eyeColor: {r: 0, g: 0, b: 0, a: 0}
   _skinTone: {r: 0, g: 0, b: 0, a: 0}
   _hair: 0
@@ -761,11 +766,19 @@ MonoBehaviour:
   currentHair: {fileID: 0}
   currentBeard: {fileID: 0}
   female: {fileID: 3201097377537978875}
-  animator: {fileID: 7282985222937732928}
   equippables: {fileID: 11400000, guid: dc4d52aa1c356d6418fee45be3b171cb, type: 2}
   armature: {fileID: 5711309793676324260}
-  minArmsCrossedDuration: 15
-  maxArmsCrossedDuration: 60
+  callouts: {fileID: 11400000, guid: 7af115d19dc10ae4daefabbb5b28ee4f, type: 2}
+  cameraData:
+    cameraBase: {fileID: 0}
+    cameraArm: {fileID: 0}
+    rotationSpeed: 0
+    angleSpeed: 0
+    zoomSpeed: 0
+    zoomVector: {x: 0, y: 0}
+    cameraRotation: 0
+    cameraZoom: 0
+    cameraAngle: 0
 --- !u!1 &4000585875499976452
 GameObject:
   m_ObjectHideFlags: 0

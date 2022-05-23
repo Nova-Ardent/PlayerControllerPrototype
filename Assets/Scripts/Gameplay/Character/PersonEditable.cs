@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PersonEditable : MonoBehaviour
+public class PersonEditable : CharacterBase
 {
     [SerializeField] Localized.GenderSelection _gender;
     public Localized.GenderSelection gender
@@ -76,7 +76,6 @@ public class PersonEditable : MonoBehaviour
     [SerializeField] GameObject currentHair;
     [SerializeField] GameObject currentBeard;
     [SerializeField] GameObject female;
-    [SerializeField] Animator animator;
 
     [Header("equippables stuff")]
     [SerializeField] Equippables equippables;
@@ -108,9 +107,6 @@ public class PersonEditable : MonoBehaviour
             _isIdle = value;
         } 
     }
-
-    [SerializeField] float minArmsCrossedDuration;
-    [SerializeField] float maxArmsCrossedDuration;
 
     private void Start()
     {

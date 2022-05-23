@@ -24,6 +24,8 @@ public static class Controller
         CameraVertical,
         CameraHorizontal,
 
+        CharacterMovementVertical,
+        CharacterMovementHorizontal,
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         // Debug only controls. Do not use them outside of the debug menu.
         DebugMenuOpen,
@@ -320,6 +322,9 @@ public static class Controller
 
         SetupButtonAxis(InputAlias.MouseVertical, Controls.CameraVertical, callouts?.mouse);
         SetupButtonAxis(InputAlias.MouseHorizontal, Controls.CameraHorizontal, callouts?.mouse);
+
+        SetupButtonAxis(KeyCode.S, KeyCode.W, Controls.CharacterMovementVertical, callouts?.keyboardKeys[KeyCode.S], callouts?.keyboardKeys[KeyCode.W]);
+        SetupButtonAxis(KeyCode.A, KeyCode.D, Controls.CharacterMovementHorizontal, callouts?.keyboardKeys[KeyCode.A], callouts?.keyboardKeys[KeyCode.D]);
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         SetupButtonDown(KeyCode.BackQuote, Controls.DebugMenuOpen, null);

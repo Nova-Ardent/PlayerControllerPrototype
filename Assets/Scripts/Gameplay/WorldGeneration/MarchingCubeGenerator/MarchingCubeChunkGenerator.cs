@@ -335,7 +335,6 @@ namespace WorldGen
 
             var cas = worldData.chunkAxisSize;
             var crs = worldData.chunkAxsReadoutBlendSize;
-            var chunkEdge = (cas - Data.AXIS_READOUT_BLEND_SIZE_OFFSET);
             for (int i = 0; i < crs; i++)
             {
                 for (int j = 0; j < crs; j++)

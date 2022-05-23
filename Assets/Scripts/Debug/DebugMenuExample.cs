@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using DebugMenu;
+using System.Linq;
 
 public class DebugMenuExample : MonoBehaviour
 {
@@ -17,10 +18,8 @@ public class DebugMenuExample : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < 20; i++)
-        {
-            Debug.LogError($"{(i + (16 - 2)) % 16} -- {(i + (16 - 2)) / 16}");
-        }
+
+        0.Range(4).OrderBy(x => x).Select(x => { Debug.LogError(x); return x; }).ToArray();
 
         string lastPressed = "press me";
 
