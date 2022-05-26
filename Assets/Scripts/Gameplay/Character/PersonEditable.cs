@@ -77,6 +77,7 @@ public class PersonEditable : CharacterBase
     [SerializeField] GameObject currentBeard;
     [SerializeField] GameObject female;
 
+
     [Header("equippables stuff")]
     [SerializeField] Equippables equippables;
     [SerializeField] Transform armature;
@@ -96,22 +97,10 @@ public class PersonEditable : CharacterBase
     Material hairMaterial;
     Renderer hairRenderer;
 
-    [Header("Idle")]
-    bool _isIdle;
-    public bool isIdle
-    {
-        get => _isIdle;
-        set
-        {
-            animator.SetBool("Idle", value);
-            _isIdle = value;
-        } 
-    }
-
-    private void Start()
+    protected override void Start()
     {
         RegisterDebugMenu();
-        if (male == null || female == null || animator == null)
+        if (male == null || female == null)
         {
             Debug.LogError("missing components to Person GO.");
         }
@@ -156,6 +145,8 @@ public class PersonEditable : CharacterBase
         SetGender(_gender);
         SetEyeColor(_eyeColor);
         SetHairColor(_hairColor);
+
+        base.Start();
     }
 
     private void Update()

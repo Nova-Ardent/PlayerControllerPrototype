@@ -26,6 +26,8 @@ public static class Controller
 
         CharacterMovementVertical,
         CharacterMovementHorizontal,
+        CharacterJump,
+        CharacterSprint,
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         // Debug only controls. Do not use them outside of the debug menu.
         DebugMenuOpen,
@@ -214,7 +216,7 @@ public static class Controller
     }
     #endregion
 #region Get
-    public static bool GetKey(Controls control, float duration = 1.0f)
+    public static bool GetKey(Controls control, float duration = 0.0f)
     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         if (DebugWillEatInput(control))
@@ -325,7 +327,8 @@ public static class Controller
 
         SetupButtonAxis(KeyCode.S, KeyCode.W, Controls.CharacterMovementVertical, callouts?.keyboardKeys[KeyCode.S], callouts?.keyboardKeys[KeyCode.W]);
         SetupButtonAxis(KeyCode.A, KeyCode.D, Controls.CharacterMovementHorizontal, callouts?.keyboardKeys[KeyCode.A], callouts?.keyboardKeys[KeyCode.D]);
-
+        SetupButtonHeld(KeyCode.Space, Controls.CharacterJump, callouts?.keyboardKeys[KeyCode.Space]);
+        SetupButtonHeld(KeyCode.LeftShift, Controls.CharacterSprint, callouts?.keyboardKeys[KeyCode.LeftShift]);
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         SetupButtonDown(KeyCode.BackQuote, Controls.DebugMenuOpen, null);
         SetupButtonDown(KeyCode.Escape, Controls.DebugMenuClose, null);

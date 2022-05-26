@@ -6,28 +6,25 @@ using UnityEngine;
 public class LocalCharacter : PersonEditable
 {
     [System.Serializable]
-    public struct CameraData
+    public class CameraData
     {
-        [SerializeField] public GameObject cameraBase;
-        [SerializeField] public GameObject cameraArm;
-        [SerializeField] public float rotationSpeed;
-        [SerializeField] public float angleSpeed;
-        [SerializeField] public float zoomSpeed;
-        [SerializeField] public Vector2 zoomVector;
+        public Camera mainCamera;
+        public GameObject cameraArm;
+        public GameObject cameraArmTip;
 
+        public float currentRotation = 0;
+        public float currentTilt = 0;
+        public float tiltMin = -20;
+        public float tiltMax = 40;
 
-        public float cameraRotation;
-        public float cameraZoom;
-        public float cameraAngle;
-        public float cameraArmAngle;
-        public float minAngle;
-        public float maxAngle;
+        public float lerp = 1.0f;
     }
+
 
     [SerializeField] Callouts callouts;
     [SerializeField] CameraData cameraData;
 
-    void Start()
+    protected override void Start()
     {
         Localized.Instance.ValidateAndCreateLanguages();
         Localized.Instance.SetLanguage(0);
@@ -43,11 +40,11 @@ public class LocalCharacter : PersonEditable
             characterData.name = Steamworks.SteamFriends.GetPersonaName();
         }
 
-        SetCameraZoom();
         RegisterDebug();
+        base.Start();
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
         UnregisterDebug();
     }
@@ -55,69 +52,63 @@ public class LocalCharacter : PersonEditable
 
     void Update()
     {
-        UpdateMovement();
+        JumpAndGravity(Controller.GetKey(Controller.Controls.CharacterJump));
+        GroundedCheck();
+        
+        Move
+        ( new Vector2
+            ( Controller.GetAxis(Controller.Controls.CharacterMovementHorizontal)
+            , Controller.GetAxis(Controller.Controls.CharacterMovementVertical)
+            )
+        , Controller.GetKey(Controller.Controls.CharacterSprint)
+        , cameraData.mainCamera.transform.rotation.eulerAngles.y + 180);
+
         UpdateCamera();
     }
 
     void UpdateCamera()
     {
-        bool rotationUpdated = false;
+        cameraData.cameraArm.transform.position = this.transform.position;
 
-        var newHorizontal = Controller.GetAxis(Controller.Controls.CameraHorizontal);
-        var newVertical = Controller.GetAxis(Controller.Controls.CameraVertical);
-
-        if (newHorizontal != 0)
+        float rotation = Controller.GetAxis(Controller.Controls.CameraHorizontal);
+        float tilt = Controller.GetAxis(Controller.Controls.CameraVertical);
+        if (rotation != 0 || tilt != 0)
         {
-            cameraData.cameraRotation += newHorizontal * cameraData.rotationSpeed;
-            if (cameraData.cameraRotation > 315)
+            cameraData.currentRotation += rotation;
+            if (cameraData.currentRotation > 360)
             {
-                cameraData.cameraRotation -= 360;
+                cameraData.currentRotation -= 360;
             }
-            else if (cameraData.cameraRotation < -45)
+            else if (cameraData.currentRotation < 0)
             {
-                cameraData.cameraRotation += 360;
-            }
-
-            rotationUpdated = true;
-        }
-        
-        if (newVertical != 0)
-        {
-            cameraData.cameraArmAngle -= newVertical * cameraData.rotationSpeed;
-            if (cameraData.cameraArmAngle < cameraData.minAngle)
-            {
-               cameraData.cameraArmAngle = cameraData.minAngle;
-            }
-            else if (cameraData.cameraArmAngle > cameraData.maxAngle)
-            {
-                cameraData.cameraArmAngle = cameraData.maxAngle;
+                cameraData.currentRotation += 360;
             }
 
-            rotationUpdated = true;
+            cameraData.currentTilt -= tilt;
+            if (cameraData.currentTilt < cameraData.tiltMin)
+            {
+                cameraData.currentTilt = cameraData.tiltMin;
+            }
+            else if (cameraData.currentTilt > cameraData.tiltMax)
+            {
+                cameraData.currentTilt = cameraData.tiltMax;
+            }
+
+            cameraData.cameraArm.transform.localRotation = Quaternion.Euler(cameraData.currentTilt, cameraData.currentRotation, 0);
         }
-        
-        if (rotationUpdated)
-        {
-            cameraData.cameraArm.transform.localRotation = Quaternion.Euler(cameraData.cameraArmAngle, cameraData.cameraRotation, 0);
-        }
+
+        cameraData.mainCamera.transform.position = Vector3.Lerp(cameraData.mainCamera.transform.position, cameraData.cameraArmTip.transform.position, cameraData.lerp * Time.deltaTime);
+        cameraData.mainCamera.transform.rotation = Quaternion.Lerp(cameraData.mainCamera.transform.rotation, cameraData.cameraArmTip.transform.rotation, cameraData.lerp * Time.deltaTime);
     }
 
-    void SetCameraZoom()
+    // to do anim
+    private void AssignAnimationIDs()
     {
-        cameraData.cameraBase.transform.localPosition = new Vector3(0, cameraData.zoomVector.y, cameraData.zoomVector.x);
-    }
-
-    void UpdateMovement()
-    {
-        var movement = new Vector2
-        ( Controller.GetAxis(Controller.Controls.CharacterMovementHorizontal)
-        , Controller.GetAxis(Controller.Controls.CharacterMovementVertical)
-        );
-
-        if (movement != Vector2.zero)
-        {
-            MoveDirection(Vector2.SignedAngle(movement, Vector2.down) + cameraData.cameraRotation);
-        }
+        /*_animIDSpeed = Animator.StringToHash("Speed");
+        _animIDGrounded = Animator.StringToHash("Grounded");
+        _animIDJump = Animator.StringToHash("Jump");
+        _animIDFreeFall = Animator.StringToHash("FreeFall");
+        _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");*/
     }
 
     void RegisterDebug()
