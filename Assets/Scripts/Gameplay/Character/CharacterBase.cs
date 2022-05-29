@@ -18,8 +18,6 @@ public class CharacterBase : MonoBehaviour
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
 
-        [NonSerialized] public float currentSpeed = 0;
-
         [Tooltip("How fast the character turns to face movement direction")]
         [Range(0.0f, 0.3f)]
         public float RotationSmoothTime = 0.12f;
@@ -53,18 +51,6 @@ public class CharacterBase : MonoBehaviour
 
         [Tooltip("What layers the character uses as ground")]
         public LayerMask GroundLayers;
-
-        [Tooltip("How far in degrees can you move the camera up")]
-        public float TopClamp = 70.0f;
-
-        [Tooltip("How far in degrees can you move the camera down")]
-        public float BottomClamp = -30.0f;
-
-        [Tooltip("Additional degress to override the camera. Useful for fine tuning camera position when locked")]
-        public float CameraAngleOverride = 0.0f;
-
-        [Tooltip("For locking the camera position on all axis")]
-        public bool LockCameraPosition = false;
 
         [NonSerialized] public bool isAlive = true;
 
