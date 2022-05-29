@@ -54,10 +54,10 @@ public class LocalCharacter : PersonEditable
     {
         JumpAndGravity(Controller.GetKey(Controller.Controls.CharacterJump));
         GroundedCheck();
-        
+
         Move
         ( new Vector2
-            ( Controller.GetAxis(Controller.Controls.CharacterMovementHorizontal)
+            (Controller.GetAxis(Controller.Controls.CharacterMovementHorizontal)
             , Controller.GetAxis(Controller.Controls.CharacterMovementVertical)
             )
         , Controller.GetKey(Controller.Controls.CharacterSprint)

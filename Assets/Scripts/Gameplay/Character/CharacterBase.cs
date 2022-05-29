@@ -18,6 +18,8 @@ public class CharacterBase : MonoBehaviour
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
 
+        [NonSerialized] public float currentSpeed = 0;
+
         [Tooltip("How fast the character turns to face movement direction")]
         [Range(0.0f, 0.3f)]
         public float RotationSmoothTime = 0.12f;
@@ -64,9 +66,10 @@ public class CharacterBase : MonoBehaviour
         [Tooltip("For locking the camera position on all axis")]
         public bool LockCameraPosition = false;
 
+        [NonSerialized] public bool isAlive = true;
+
         // player
         [NonSerialized] public float _speed;
-        [NonSerialized] public float _animationBlend;
         [NonSerialized] public float _targetRotation = 0.0f;
         [NonSerialized] public float _rotationVelocity;
         [NonSerialized] public float _verticalVelocity;
@@ -75,19 +78,152 @@ public class CharacterBase : MonoBehaviour
         // timeout deltatime
         [NonSerialized] public float _jumpTimeoutDelta;
         [NonSerialized] public float _fallTimeoutDelta;
+    }
 
-        // animation IDs
-        [NonSerialized] public int _animIDSpeed;
-        [NonSerialized] public int _animIDGrounded;
-        [NonSerialized] public int _animIDJump;
-        [NonSerialized] public int _animIDFreeFall;
-        [NonSerialized] public int _animIDMotionSpeed;
+    [System.Serializable]
+    public class AminationData
+    {
+        public Animator animator;
+
+        [NonSerialized] public int walkingHash;
+        [NonSerialized] public int walkingSpeedHash;
+        [NonSerialized] public int runningHash;
+        [NonSerialized] public int jumpHash;
+        [NonSerialized] public int groundedHash;
+        [NonSerialized] public int fallingSpeedHash;
+        [NonSerialized] public int lockedOnHash;
+        [NonSerialized] public int walkingDirectionHash; // only important when locked on
+
+        bool _walking;
+        public bool walking
+        {
+            get => _walking;
+            set
+            {
+                if (value != _walking)
+                {
+                    _walking = value;
+                    animator.SetBool(walkingHash, value);
+                }
+            }
+        }
+
+        float _walkingSpeed;
+        public float walkingSpeed
+        {
+            get => _walkingSpeed;
+            set
+            {
+                if (value != _walkingSpeed)
+                {
+                    _walkingSpeed = value;
+                    animator.SetFloat(walkingSpeedHash, value);
+                }
+            }
+        }
+
+        bool _running;
+        public bool running
+        {
+            get => _running;
+            set
+            {
+                if (value != _running)
+                {
+                    _running = value;
+                    animator.SetBool(runningHash, value);
+                }
+            }
+        }
+
+        public bool jump
+        {
+            set
+            {
+                if (value)
+                {
+                    animator.SetTrigger(jumpHash);
+                }
+                else
+                {
+                    animator.ResetTrigger(jumpHash);
+                }
+            }
+        }
+
+        bool _grounded;
+        public bool grounded
+        {
+            get => _grounded;
+            set
+            {
+                if (value != _grounded)
+                {
+                    _grounded = value;
+                    animator.SetBool(groundedHash, value);
+                }
+            }
+        }
+
+        float _fallingSpeed;
+        public float fallingSpeed
+        {
+            get => _fallingSpeed;
+            set
+            {
+                if (value != _fallingSpeed)
+                {
+                    _fallingSpeed = value;
+                    animator.SetFloat(fallingSpeedHash, value);
+                }
+            }
+        }
+
+        bool _lockedOn;
+        public bool lockedOn
+        {
+            get => _lockedOn;
+            set
+            {
+                if (value != _lockedOn)
+                {
+                    _lockedOn = value;
+                    animator.SetBool(lockedOnHash, value);
+                }
+            }
+        }
+
+        float _walkingDirection;
+        public float walkingDirection
+        {
+            get => _walkingDirection;
+            set
+            {
+                if (value != _walkingDirection)
+                {
+                    _walkingDirection = value;
+                    animator.SetFloat(walkingDirectionHash, value);
+                }
+            }
+        }
     }
 
     [SerializeField] protected CharacterData characterData;
+    [SerializeField] protected AminationData animationData;
 
     protected CharacterController controller;
 
+    protected virtual void Awake()
+    {
+        animationData.walkingHash = Animator.StringToHash("walking");
+        animationData.walkingSpeedHash = Animator.StringToHash("speed");
+        animationData.runningHash = Animator.StringToHash("running");
+        animationData.jumpHash = Animator.StringToHash("jump");
+        animationData.groundedHash = Animator.StringToHash("grounded");
+        animationData.fallingSpeedHash = Animator.StringToHash("fallingSpeed");
+        animationData.lockedOnHash = Animator.StringToHash("lockedOn");
+        animationData.walkingDirectionHash = Animator.StringToHash("walkingDirection");
+    }
 
     protected virtual void Start()
     {
@@ -96,6 +232,7 @@ public class CharacterBase : MonoBehaviour
 
     protected void JumpAndGravity(bool jump)
     {
+        animationData.jump = jump;
         if (characterData.Grounded)
         {
             characterData._fallTimeoutDelta = characterData.FallTimeout;
@@ -105,7 +242,7 @@ public class CharacterBase : MonoBehaviour
                 characterData._verticalVelocity = -2f;
             }
 
-            if (jump && characterData._jumpTimeoutDelta <= 0.0f)
+            if (jump && characterData.isAlive && characterData._jumpTimeoutDelta <= 0.0f)
             {
                 characterData._verticalVelocity = Mathf.Sqrt(characterData.JumpHeight * -2f * characterData.Gravity);
             }
@@ -122,6 +259,8 @@ public class CharacterBase : MonoBehaviour
             {
                 characterData._fallTimeoutDelta -= Time.deltaTime;
             }
+
+            animationData.fallingSpeed = characterData._verticalVelocity;
         }
 
         if (characterData._verticalVelocity < characterData._terminalVelocity)
@@ -136,15 +275,35 @@ public class CharacterBase : MonoBehaviour
             transform.position.z);
         characterData.Grounded = Physics.CheckSphere(spherePosition, characterData.GroundedRadius, characterData.GroundLayers,
             QueryTriggerInteraction.Ignore);
+
+        animationData.grounded = characterData.Grounded;
+
+        if (characterData.Grounded && characterData._verticalVelocity < -9.4)
+        {
+            characterData.isAlive = false;
+        }
     }
 
     protected virtual void Move(Vector2 move, bool sprinting, float offsetCameraAngle = 0)
     {
+        if (!characterData.isAlive)
+        {
+            move = Vector2.zero;
+            sprinting = false;
+        }
+
+
         float targetSpeed = sprinting ? characterData.SprintSpeed : characterData.MoveSpeed;
 
         if (move == Vector2.zero)
         {
             targetSpeed = 0.0f;
+            animationData.walking = false;
+        }
+        else
+        {
+            animationData.walking = true;
+            animationData.running = sprinting;
         }
 
         float currentHorizontalSpeed = new Vector3(controller.velocity.x, 0.0f, controller.velocity.z).magnitude;
@@ -165,8 +324,7 @@ public class CharacterBase : MonoBehaviour
             characterData._speed = targetSpeed;
         }
 
-        characterData._animationBlend = Mathf.Lerp(characterData._animationBlend, targetSpeed, Time.deltaTime * characterData.SpeedChangeRate);
-        if (characterData._animationBlend < 0.01f) characterData._animationBlend = 0f;
+        animationData.walkingSpeed = characterData._speed;
 
         if (move != Vector2.zero)
         {
@@ -184,7 +342,7 @@ public class CharacterBase : MonoBehaviour
         Vector3 targetDirection = Quaternion.Euler(0.0f, characterData._targetRotation, 0.0f) * Vector3.forward;
 
         controller.Move(targetDirection.normalized * (characterData._speed * Time.deltaTime) +
-           new Vector3(0.0f, characterData._verticalVelocity, 0.0f) * Time.deltaTime);
+           new Vector3(0.0f, characterData._verticalVelocity * Time.deltaTime, 0.0f));
     }
 
     private void OnDrawGizmosSelected()

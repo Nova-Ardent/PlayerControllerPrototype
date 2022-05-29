@@ -4,77 +4,53 @@ ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
-      74: -8712307086320314811
-    second: Armature|IdleArmsCrossed
+      74: -655228741203961562
+    second: MainArmature|Falling
   - first:
-      74: -4696473518635800561
-    second: Armature|IdleHandsDown
+      74: -2107577300688198379
+    second: MainArmature|Falling Unstable
   - first:
-      74: -8655452186375984180
-    second: Armature|HandsDownToCrossed
+      74: -4203330770420564011
+    second: MainArmature|Idle
   - first:
-      74: -4274770991410265338
-    second: Armature|Walking
+      74: -7695810739110694259
+    second: MainArmature|Idle Bored
   - first:
-      74: 534555973356466423
-    second: Armature|WalkingBackwards
+      74: -1262493413099819143
+    second: MainArmature|Idle FixShoulder
   - first:
-      74: -8611706581161604005
-    second: Armature|WalkingBackwards45
+      74: -8660823032686061043
+    second: MainArmature|Idle HeadNod
   - first:
-      74: 1744348117308132345
-    second: Armature|WalkingBackwardsn45
+      74: 3734248183549698693
+    second: MainArmature|Jumping
   - first:
-      74: -3078361230714356883
-    second: Armature|SideStepLeft
+      74: 5130035107901904034
+    second: MainArmature|Landing Dead
   - first:
-      74: 1405619477446863004
-    second: Armature|SideStepRight
+      74: -4980725236895071533
+    second: MainArmature|Landing Hard
   - first:
-      74: 2868890822910833573
-    second: Armature|NoWeaponStance
+      74: -6966598504047540243
+    second: MainArmature|Landing Soft
   - first:
-      74: 777670829826191947
-    second: Armature|Idle_Hands_Down
+      74: 2231952795698177745
+    second: MainArmature|Running
   - first:
-      74: 8031179919737153531
-    second: Armature|No_Weapon_Stance
+      74: -1088631282499497288
+    second: MainArmature|Walk Left
   - first:
-      74: -1064488109424470984
-    second: Armature|Side_Step_Left
+      74: 6405986631179965114
+    second: MainArmature|Walk Right
   - first:
-      74: 887013726307588806
-    second: Armature|Side_Step_Left_45
+      74: -4406290005786189223
+    second: MainArmature|Walking
   - first:
-      74: -6952404770624237164
-    second: Armature|Side_Step_Left_45n
+      74: -4522270003466832668
+    second: MainArmature|Walking Backward
   - first:
-      74: -8128084742470863625
-    second: Armature|Side_Step_Right
-  - first:
-      74: 311227517956232078
-    second: Armature|Side_Step_Right_45
-  - first:
-      74: 4627689200573309090
-    second: Armature|Side_Step_Right_45n
-  - first:
-      74: 3405045740412503638
-    second: Armature|TPOS
-  - first:
-      74: 7065999140333377667
-    second: Armature|Walking_45
-  - first:
-      74: 8415677965106493004
-    second: Armature|Walking_45n
-  - first:
-      74: 7353769018915869507
-    second: Armature|Walking_Backwards
-  - first:
-      74: 6077782598341386469
-    second: Armature|Walking_Backwards_45
-  - first:
-      74: 7871384480281826660
-    second: Armature|Walking_Backwards_45n
+      74: 8634191175042920020
+    second: MainArmature|Jump
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -104,11 +80,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Armature|Idle_Hands_Down
-      takeName: Armature|Idle_Hands_Down
+      name: MainArmature|Falling
+      takeName: MainArmature|Falling
       internalID: 0
       firstFrame: 0
-      lastFrame: 120
+      lastFrame: 41
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -133,11 +109,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|No_Weapon_Stance
-      takeName: Armature|No_Weapon_Stance
+      name: MainArmature|Falling Unstable
+      takeName: MainArmature|Falling Unstable
       internalID: 0
       firstFrame: 0
-      lastFrame: 120
+      lastFrame: 270
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -162,11 +138,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Side_Step_Left
-      takeName: Armature|Side_Step_Left
+      name: MainArmature|Idle
+      takeName: MainArmature|Idle
       internalID: 0
       firstFrame: 0
-      lastFrame: 120
+      lastFrame: 500
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -191,11 +167,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Side_Step_Left_45
-      takeName: Armature|Side_Step_Left_45
+      name: MainArmature|Idle Bored
+      takeName: MainArmature|Idle Bored
       internalID: 0
       firstFrame: 0
-      lastFrame: 120
+      lastFrame: 640
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -220,11 +196,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Side_Step_Left_45n
-      takeName: Armature|Side_Step_Left_45n
+      name: MainArmature|Idle FixShoulder
+      takeName: MainArmature|Idle FixShoulder
       internalID: 0
       firstFrame: 0
-      lastFrame: 120
+      lastFrame: 349
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -249,98 +225,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Side_Step_Right
-      takeName: Armature|Side_Step_Right
+      name: MainArmature|Landing Hard
+      takeName: MainArmature|Landing Hard
       internalID: 0
-      firstFrame: 0
+      firstFrame: 2
       lastFrame: 120
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature|Side_Step_Right_45
-      takeName: Armature|Side_Step_Right_45
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 120
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature|Side_Step_Right_45n
-      takeName: Armature|Side_Step_Right_45n
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 120
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature|TPOS
-      takeName: Armature|TPOS
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -365,11 +254,69 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Walking
-      takeName: Armature|Walking
+      name: MainArmature|Landing Dead
+      takeName: MainArmature|Landing Dead
       internalID: 0
       firstFrame: 0
-      lastFrame: 120
+      lastFrame: 74
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: MainArmature|Landing Soft
+      takeName: MainArmature|Landing Soft
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 45
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: MainArmature|Running
+      takeName: MainArmature|Running
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 38
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -394,11 +341,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Walking_45
-      takeName: Armature|Walking_45
+      name: MainArmature|Walk Left
+      takeName: MainArmature|Walk Left
       internalID: 0
       firstFrame: 0
-      lastFrame: 120
+      lastFrame: 62
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -423,11 +370,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Walking_45n
-      takeName: Armature|Walking_45n
+      name: MainArmature|Walk Right
+      takeName: MainArmature|Walk Right
       internalID: 0
       firstFrame: 0
-      lastFrame: 120
+      lastFrame: 62
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -452,11 +399,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Walking_Backwards
-      takeName: Armature|Walking_Backwards
+      name: MainArmature|Walking
+      takeName: MainArmature|Walking
       internalID: 0
       firstFrame: 0
-      lastFrame: 120
+      lastFrame: 61
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -481,11 +428,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Walking_Backwards_45
-      takeName: Armature|Walking_Backwards_45
+      name: MainArmature|Walking Backward
+      takeName: MainArmature|Walking Backward
       internalID: 0
       firstFrame: 0
-      lastFrame: 120
+      lastFrame: 72
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -510,11 +457,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature|Walking_Backwards_45n
-      takeName: Armature|Walking_Backwards_45n
+      name: MainArmature|Jump
+      takeName: MainArmature|Jump
       internalID: 0
       firstFrame: 0
-      lastFrame: 120
+      lastFrame: 50
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -538,7 +485,7 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -593,7 +540,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: Armature
+    rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
