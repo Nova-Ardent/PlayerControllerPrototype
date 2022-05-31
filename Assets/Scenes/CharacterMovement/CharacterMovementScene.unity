@@ -170,7 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterData:
     name: 
-    MoveSpeed: 1
+    MoveSpeed: 1.5
     SprintSpeed: 4
     RotationSmoothTime: 0.12
     SpeedChangeRate: 10
@@ -184,10 +184,6 @@ MonoBehaviour:
     GroundLayers:
       serializedVersion: 2
       m_Bits: 128
-    TopClamp: 70
-    BottomClamp: -30
-    CameraAngleOverride: 0
-    LockCameraPosition: 0
   animationData:
     animator: {fileID: 8642814345437166028}
   _gender: 0
