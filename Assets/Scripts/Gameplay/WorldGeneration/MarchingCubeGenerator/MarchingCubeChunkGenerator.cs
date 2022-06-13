@@ -265,7 +265,7 @@ namespace WorldGen
             int numThreadsPerAxisY = Mathf.CeilToInt(numVoxelsPerAxis / (float)worldData.computeThreadsY);
             int numThreadsPerAxisZ = Mathf.CeilToInt(numVoxelsPerAxis / (float)worldData.computeThreadsZ);
 
-            worldData.pointsBuffer.SetData(updateAndGetChunkPoints(x, y, z));
+            worldData.pointsBuffer.SetData(UpdateAndGetChunkPoints(x, y, z));
 
             worldData.triangleBuffer.SetCounterValue(0);
             worldData.computeShader.SetBuffer(0, "points", worldData.pointsBuffer);
@@ -305,7 +305,7 @@ namespace WorldGen
             return mesh;
         }
 
-        float[] updateAndGetChunkPoints(int x, int y, int z)
+        float[] UpdateAndGetChunkPoints(int x, int y, int z)
         {
             MarchingCubesChunkBase[,,] neighbouringChunks = new MarchingCubesChunkBase[3,3,3];
             for (int i = 0; i < 3; i++)
@@ -333,7 +333,6 @@ namespace WorldGen
                 }
             }
 
-            var cas = worldData.chunkAxisSize;
             var crs = worldData.chunkAxsReadoutBlendSize;
             for (int i = 0; i < crs; i++)
             {

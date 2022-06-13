@@ -4,154 +4,108 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 
+#if UNITY_EDITOR
 public static class EquippablesGenerator
 {
     static string fileName = "./Assets/Scripts/Gameplay/Equippables/Equippables.cs";
 
-    static string body =
-@"// Do not manually modify this file. This file has been procedurally generated.
-
-using System;
-using System.Linq;
-using UnityEngine;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System.Collections.Generic;
-
-[CreateAssetMenu(fileName = ""Equippables"", menuName = ""ScriptableObjects/Equippables"", order = 1)]
-public class Equippables : ScriptableObject
-{{
-{0}
-}}
-";
-
-    static string enums =
-@"    [JsonConverter(typeof(StringEnumConverter))]
-    public enum {0}
-    {{
-{1}    }}
-
-";
-
-    static string serializableStruct =
-@"    [System.Serializable]
-    public struct {0}Prefabs
-    {{
-{1}    }}
-
-";
-
-    static string getGOFunction =
-@"    public GameObject Get{0}({0} val)
-    {{
-        switch (val)
-        {{
-            default:
-{1}        }}
-    }}
-
-";
-
-
-    static string structVal = "    public {0}Prefabs {1};\n";
-    static string enumVal = "        {0},\n";
-    static string GOVals = "        public GameObject {0};\n";
-    static string cases = "            case {1}.{0}: return {2}.{0};\n";
-
     static string CategoryPath = "./Assets/GameObjects/Characters/Humans/PlayerCharacters/Equippables";
 
-#if UNITY_EDITOR
+
     [UnityEditor.MenuItem("FileGenerator/Equippables")]
-#endif
-    static void GenerateElementsList()
+    static void GenerateEquippablesList()
     {
-        var sw = new StreamWriter(fileName);
-        sw.Write(GenerateBody());
-        sw.Close();
+        FileGenerator generator = new Equippables();
+        generator.GenerateFile(fileName);
     }
 
-    static string GenerateBody()
+    class Equippables : CSharpFileGenerator
     {
-        return string.Format(body, BodyInformation());
+        protected override void GenerateFileText()
+        {
+            Line("using System;");
+            Line("using System.Linq;");
+            Line("using UnityEngine;");
+            Line("using Newtonsoft.Json;");
+            Line("using Newtonsoft.Json.Converters;");
+            Line("using System.Collections.Generic;");
+
+            Line();
+            Line("[CreateAssetMenu(fileName = \"Equippables\", menuName = \"ScriptableObjects/Equippables\", order = 1)]");
+            using (Class("Equippables", Accessibility.Public, extends : "ScriptableObject"))
+            {
+                string[] categoryFiles = Directory.GetDirectories(CategoryPath)
+                    .Select(x => Path.GetFileNameWithoutExtension(x))
+                    .ToArray();
+
+                foreach (var category in categoryFiles)
+                {
+                    Line("[JsonConverter(typeof(StringEnumConverter))]");
+                    using (Enum(category.ToString(), Accessibility.Public))
+                    {
+                        string[] itemFiles = Directory.GetDirectories(CategoryPath + $"/{category}")
+                            .Select(x => Path.GetFileNameWithoutExtension(x))
+                            .OrderByDescending(x => x[0] == '_')
+                            .ToArray();
+
+                        foreach (var itemFile in itemFiles)
+                        {
+                            Line(itemFile + ",");
+                        }
+                    }
+                    Line("");
+                }
+
+                foreach (var category in categoryFiles)
+                {
+                    Line("[System.Serializable]");
+                    using (Struct(category.ToString() + "Prefabs", Accessibility.Public))
+                    {
+                        string[] itemFiles = Directory.GetDirectories(CategoryPath + $"/{category}")
+                            .Select(x => Path.GetFileNameWithoutExtension(x))
+                            .OrderByDescending(x => x[0] == '_')
+                            .ToArray();
+
+                        foreach (var itemFile in itemFiles)
+                        {
+                            Line($"public GameObject {itemFile};");
+                        }
+                    }
+                    Line();
+                }
+
+                foreach (var category in categoryFiles)
+                {
+                    Line($"public {category}Prefabs {FormateObjectName(category)};");
+                }
+
+                foreach (var category in categoryFiles)
+                {
+                    Line();
+                    string[] itemFiles = Directory.GetDirectories(CategoryPath + $"/{category}")
+                        .Select(x => Path.GetFileNameWithoutExtension(x))
+                        .OrderByDescending(x => x[0] == '_')
+                        .ToArray();
+
+                    using (Function($"Get{category}", Accessibility.Public, "GameObject", $"{category} val"))
+                    {
+                        using (Switch("val"))
+                        {
+                            Line("default:");
+                            foreach (var itemFile in itemFiles)
+                            {
+                                Line($"case {category}.{itemFile}: return {FormateObjectName(category)}.{itemFile};");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        string FormateObjectName(string category)
+        {
+            return char.ToLower(category[0]) + category.Substring(1);
+        }
     }
-
-    static string BodyInformation()
-    {
-        string[] categoryFiles = Directory.GetDirectories(CategoryPath)
-            .Select(x => Path.GetFileNameWithoutExtension(x))
-            .ToArray();
-
-        string structs = "";
-        foreach (var category in categoryFiles)
-        {
-            structs += string.Format(enums, category, EnumNames(category));
-        }
-
-        foreach (var category in categoryFiles)
-        {
-            structs += string.Format(serializableStruct, category, GONames(category));
-        }
-
-        foreach (var category in categoryFiles)
-        {
-            structs += string.Format(structVal, category, char.ToLower(category[0]) + category.Substring(1));
-        }
-        structs += "\n";
-
-        foreach (var category in categoryFiles)
-        {
-            structs += string.Format(getGOFunction, category, CaseNames(category));
-        }
-
-        return structs;
-    }
-
-    static string EnumNames(string path)
-    {
-        string[] itemFiles = Directory.GetDirectories(CategoryPath + $"/{path}")
-            .Select(x => Path.GetFileNameWithoutExtension(x))
-            .OrderByDescending(x => x[0] == '_')
-            .ToArray();
-
-        string values = "";
-        foreach(var item in itemFiles)
-        {
-            values += string.Format(enumVal, item);
-        }
-
-        return values;
-    }
-
-    static string GONames(string path)
-    {
-        string[] itemFiles = Directory.GetDirectories(CategoryPath + $"/{path}")
-            .Select(x => Path.GetFileNameWithoutExtension(x))
-            .OrderByDescending(x => x[0] == '_')
-            .ToArray();
-
-        string values = "";
-        foreach (var item in itemFiles)
-        {
-            values += string.Format(GOVals, item);
-        }
-
-        return values;
-    }
-
-    static string CaseNames(string path)
-    {
-        string[] itemFiles = Directory.GetDirectories(CategoryPath + $"/{path}")
-            .Select(x => Path.GetFileNameWithoutExtension(x))
-            .OrderByDescending(x => x[0] == '_')
-            .ToArray();
-
-        string values = "";
-        foreach (var item in itemFiles)
-        {
-            values += string.Format(cases, item, path, char.ToLower(path[0]) + path.Substring(1));
-        }
-
-        return values;
-    }
-
 }
+#endif

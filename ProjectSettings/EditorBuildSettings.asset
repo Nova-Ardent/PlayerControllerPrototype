@@ -8,7 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/GameScene/GameScene.unity
     guid: d1c3109bdb54ad54c8a2b2838528e640
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainMenu/MainMenu.unity
     guid: c15e82b187a862e4886059606af202af
+  - enabled: 1
+    path: Assets/Scenes/CharacterMovement/CharacterMovementScene.unity
+    guid: b849ea018f843f64b9fa3f99b74410a8
   m_configObjects: {}
