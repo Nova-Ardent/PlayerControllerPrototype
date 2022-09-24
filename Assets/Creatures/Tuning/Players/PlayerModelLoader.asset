@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3724c45d2262f1242bcbe12887b31876, type: 3}
+  m_Name: PlayerModelLoader
+  m_EditorClassIdentifier: 
+  CharacterModels:
+    keys: 0000000001000000
+    values:
+    - {fileID: 959012625907505611, guid: fd1fbadeab171b3429084c162d95cd96, type: 3}
+    - {fileID: -7488258257324463318, guid: c9190c2711e11294c914f33fbc9df06e, type: 3}

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85db21070fb81f64d830927b796aed82, type: 3}
+  m_Name: PlayerMovementData
+  m_EditorClassIdentifier: 
+  WalkingSpeed: 1.39
+  RunningSpeed: 3.34
+  MovementTransitionTime: 1
+  Gravity: -9.81
+  DeathFallingSpeed: -13
+  GroundLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  GroundedPosition: {x: 0, y: -0.69, z: 0}
+  GroundedRadius: 0.28
+  GroundedDrawColor: {r: 0, g: 1, b: 0.11986828, a: 1}
+  NotGroundedDrawColor: {r: 1, g: 0, b: 0, a: 1}
+  JumpAtNormalized: 0.69
+  MovingJumpAtNormalized: 0.12
+  JumpDelay: 0.5
+  JumpStrength: 3.61
+  RotationSpeed: 0.109
