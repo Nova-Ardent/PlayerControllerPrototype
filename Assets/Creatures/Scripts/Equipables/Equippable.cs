@@ -13,6 +13,11 @@ namespace Creatures.Equippables
 
         protected GameObject Equip(GameObject prefab)
         {
+            if (prefab == null)
+            {
+                return null;
+            }
+
             var equippable = GameObject.Instantiate(prefab);
             equippable.transform.SetParent(animationRoot);
 

@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Utilities;
 using UnityEngine;
+using Creatures.Lockable;
 using Objects.Interactable;
+using Utilities.Math;
 using static Utilities.Controller.Controller;
 
-namespace Creatures.Player
+namespace Creatures.Player.Camera
 {
     public class PlayerCameraController : ILockable
     {
@@ -14,10 +16,16 @@ namespace Creatures.Player
 
         PlayerCameraData playerCameraData;
         GameObject cameraArm;
-        Camera camera;
+        UnityEngine.Camera camera;
         Transform target;
 
         InteractableObject lockedBy;
+
+        Quaternion cameraAngleFrom;
+        Quaternion cameraAngleTo;
+        Vector3 cameraArmLengthFrom;
+        Vector3 cameraArmLengthTo;
+        Lerper lerper = new Lerper(0.5f);
 
         public bool IsLocked
         {
@@ -37,7 +45,7 @@ namespace Creatures.Player
         public PlayerCameraController(
             PlayerCameraData playerCameraData,
             GameObject cameraArm,
-            Camera camera,
+            UnityEngine.Camera camera,
             Transform target)
         {
             this.playerCameraData = playerCameraData;
@@ -45,72 +53,111 @@ namespace Creatures.Player
             this.camera = camera;
             this.target = target;
 
-            Initialize();
-        }
-
-        void Initialize()
-        {
-            this.camera.transform.localPosition = this.playerCameraData.CameraArmLength;
-            this.camera.transform.localRotation = Quaternion.Euler(this.playerCameraData.CameraAngle);
-
-            Cursor.lockState = this.playerCameraData.CursorLocked;
+            Cursor.lockState = CursorLockMode.Locked;
+            SetLerper(this.playerCameraData.CameraArmLength, this.playerCameraData.CameraAngle);
         }
 
         public void Update()
         {
-#if UNITY_EDITOR
-            Initialize();
-#endif
+            UpdateCameraArm();
+            UpdateCameraPosition();
+            UpdateCameraRotation();
+        }
 
-            if (!IsLocked)
+        public void UpdateCameraArm()
+        {
+            if (!lerper.Update())
             {
-                UpdateCameraPosition();
-                UpdateCameraRotation();
+                this.camera.transform.localPosition = Vector3.Lerp(cameraArmLengthFrom, cameraArmLengthTo, lerper.Value);
+                this.camera.transform.localRotation = Quaternion.Lerp(cameraAngleFrom, cameraAngleTo, lerper.Value);
             }
         }
 
         public void UpdateCameraPosition()
         {
-            this.cameraArm.transform.position = Vector3.LerpUnclamped(
-                this.target.transform.position,
-                this.cameraArm.transform.position,
-                this.playerCameraData.PositionSnapSpeed);
+            if (IsLocked && lockedBy is ICanLockCameraPosition cameraLock)
+            {
+                this.cameraArm.transform.position = Vector3.LerpUnclamped(
+                    cameraLock.CameraFocalPoint.position,
+                    this.cameraArm.transform.position,
+                    this.playerCameraData.PositionSnapSpeed);
+            }
+            else
+            {
+                this.cameraArm.transform.position = Vector3.LerpUnclamped(
+                    this.target.transform.position,
+                    this.cameraArm.transform.position,
+                    this.playerCameraData.PositionSnapSpeed);
+            }
         }
 
         public void UpdateCameraRotation()
         {
-            this.xRotation += GetAxis(Controls.CameraMovementX) * this.playerCameraData.RotationSpeedX * Time.deltaTime;
-            if (this.xRotation < 0)
+            if (IsLocked && lockedBy is ICanLockCameraPosition cameraLock)
             {
-                this.xRotation += 360f;
+                this.cameraArm.transform.localRotation = Quaternion.LerpUnclamped(
+                    this.cameraArm.transform.localRotation,
+                    cameraLock.CameraFocalPoint.rotation,
+                    cameraLock.FocusPointData.RotationSnapSpeed);
+
+                this.xRotation = cameraLock.CameraFocalPoint.rotation.eulerAngles.y;
+                this.yRotation = -cameraLock.CameraFocalPoint.rotation.eulerAngles.x;
             }
-            else if (this.xRotation > 360f)
+            else
             {
-                this.xRotation -= 360f;
+                this.xRotation += GetAxis(Controls.CameraMovementX) * this.playerCameraData.RotationSpeedX * Time.deltaTime;
+                if (this.xRotation < 0)
+                {
+                    this.xRotation += 360f;
+                }
+                else if (this.xRotation > 360f)
+                {
+                    this.xRotation -= 360f;
+                }
+
+                this.yRotation += GetAxis(Controls.CameraMovementY) * this.playerCameraData.RotationSpeedY * Time.deltaTime;
+                this.yRotation = Mathf.Clamp(
+                    this.yRotation,
+                    this.playerCameraData.MinYRotation,
+                    this.playerCameraData.MaxYRotation);
+
+
+                Quaternion rotation = Quaternion.Euler(-this.yRotation, this.xRotation, 0f);
+                this.cameraArm.transform.localRotation = Quaternion.LerpUnclamped(
+                    this.cameraArm.transform.localRotation,
+                    rotation,
+                    this.playerCameraData.RotationSnapSpeed);
             }
-
-            this.yRotation += GetAxis(Controls.CameraMovementY) * this.playerCameraData.RotationSpeedY * Time.deltaTime;
-            this.yRotation = Mathf.Clamp(
-                this.yRotation,
-                this.playerCameraData.MinYRotation,
-                this.playerCameraData.MaxYRotation);
-
-
-            Quaternion rotation = Quaternion.Euler(-this.yRotation, this.xRotation, 0f);
-            this.cameraArm.transform.localRotation = Quaternion.LerpUnclamped(
-                this.cameraArm.transform.localRotation,
-                rotation,
-                this.playerCameraData.RotationSnapSpeed);
         }
 
-        public void Unlock()
+        void SetLerper(Vector3 length, Vector3 angle)
         {
-            this.lockedBy = null;
+            cameraArmLengthFrom = this.camera.transform.localPosition;
+            cameraAngleFrom = this.camera.transform.localRotation;
+
+            cameraArmLengthTo = length;
+            cameraAngleTo = Quaternion.Euler(angle);
+            lerper.Reset();
+        }
+
+        public void Unlock(InteractableObject unlockBy)
+        {
+            if (unlockBy == this.lockedBy)
+            {
+                this.lockedBy = null;
+                SetLerper(this.playerCameraData.CameraArmLength, this.playerCameraData.CameraAngle);
+            }
         }
 
         public void Lock(InteractableObject lockBy)
         {
-            this.lockedBy = lockBy;
+            if (lockBy is ICanLockCameraPosition cameraLock)
+            {
+                this.lockedBy = lockBy;
+                SetLerper(
+                    cameraLock.FocusPointData.CameraArmLength,
+                    cameraLock.FocusPointData.RelativeAngleToFocus);
+            }
         }
     }
 }

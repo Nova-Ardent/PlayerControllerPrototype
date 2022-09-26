@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Utilities;
 using UnityEngine;
 using Objects.Interactable;
+using Creatures.Lockable;
+using Creatures.Player.Camera;
 using static Utilities.Controller.Controller;
 
 namespace Creatures.Player
@@ -49,6 +51,15 @@ namespace Creatures.Player
                 UpdatePosition();
                 base.Update();
             }
+            else
+            {
+                playerAnimator.SetStateIdle();
+                if (lockedBy is ICanLockPlayerPosition canLock)
+                {
+                    Collider.transform.position = canLock.StandingPoint.position;
+                    Collider.transform.rotation = canLock.StandingPoint.rotation;
+                }
+            }
         }
 
         public override void UpdateJump()
@@ -86,14 +97,20 @@ namespace Creatures.Player
             }
         }
 
-        public void Unlock()
+        public void Unlock(InteractableObject unlockBy)
         {
-            this.lockedBy = null;
+            if (unlockBy == this.lockedBy)
+            {
+                this.lockedBy = null;
+            }
         }
 
         public void Lock(InteractableObject lockBy)
         {
-            this.lockedBy = lockBy;   
+            if (lockBy is ICanLockPlayerPosition)
+            {
+                this.lockedBy = lockBy;
+            }
         }
     }
 }

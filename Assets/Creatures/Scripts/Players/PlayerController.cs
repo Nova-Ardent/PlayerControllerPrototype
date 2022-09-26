@@ -4,6 +4,7 @@ using Objects.UI;
 using UnityEngine;
 using System;
 using Creatures.Equippables;
+using Creatures.Player.Camera;
 
 namespace Creatures.Player
 {
@@ -19,7 +20,7 @@ namespace Creatures.Player
         public class PlayerMovementInfo
         {
             public GameObject cameraArm;
-            public Camera camera;
+            public UnityEngine.Camera camera;
             public PlayerCameraData cameraData;
             public Transform cameraFollowTarget;
 
@@ -58,7 +59,7 @@ namespace Creatures.Player
             get => playerMovement;
         }
 
-        public PlayerCameraController PlayerCameraInfo
+        public PlayerCameraController PlayerCameraController
         {
             get => playerCameraController;
         }

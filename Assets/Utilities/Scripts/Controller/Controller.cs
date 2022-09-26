@@ -23,6 +23,13 @@ namespace Utilities.Controller
             InteractTwo,
             InteractThree,
             InteractFour,
+
+            Select,
+            Cancel,
+            ChangeSelectionLeft,
+            ChangeSelectionRight,
+            ChangeSelectionUp,
+            ChangeSelectionDown,
         }
 
         public enum InputAlias
@@ -229,6 +236,13 @@ namespace Utilities.Controller
             SetupButtonDown(KeyCode.Alpha2, Controls.InteractTwo);
             SetupButtonDown(KeyCode.Alpha3, Controls.InteractThree);
             SetupButtonDown(KeyCode.Alpha4, Controls.InteractFour);
+
+            SetupButtonDown(KeyCode.Return, Controls.Select);
+            SetupButtonDown(KeyCode.Backspace, Controls.Cancel);
+            SetupButtonDown(KeyCode.A, Controls.ChangeSelectionLeft);
+            SetupButtonDown(KeyCode.D, Controls.ChangeSelectionRight);
+            SetupButtonDown(KeyCode.W, Controls.ChangeSelectionUp);
+            SetupButtonDown(KeyCode.S, Controls.ChangeSelectionDown);
         }
 
         static void SetupXbox()

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Creatures.Player
+namespace Creatures.Player.Camera
 {
-    [CreateAssetMenu(fileName = "CameraData", menuName = "Creatures/CameraData")]
+    [CreateAssetMenu(fileName = "CameraData", menuName = "Creatures/Camera/CameraData")]
     public class PlayerCameraData : ScriptableObject
     {
         [Header("Camera Position")]

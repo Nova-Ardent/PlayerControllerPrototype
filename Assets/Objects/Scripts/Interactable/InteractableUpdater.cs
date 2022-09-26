@@ -27,6 +27,11 @@ namespace Objects.Interactable
 
         public void SetInteractableObject(InteractableObject currentObject, PlayerController playerController)
         {
+            if (this.currentObject != null || this.playerController != null)
+            {
+                return;
+            }
+
             this.currentObject = currentObject;
             this.playerController = playerController;
         }

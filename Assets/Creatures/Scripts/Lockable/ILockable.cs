@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Objects.Interactable;
 
-namespace Creatures
+namespace Creatures.Lockable
 {
     public interface ILockable
     {
         bool IsLocked { get; }
         void Lock(InteractableObject lockedBy);
-        void Unlock();
+        void Unlock(InteractableObject unlockBy);
     }
 }

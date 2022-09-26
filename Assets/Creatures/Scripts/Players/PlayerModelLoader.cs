@@ -14,6 +14,31 @@ namespace Creatures.Player
             Feminine,
         }
 
+        public enum HairCuts
+        {
+            Bald,
+            BluntCut,
+            Bun,
+            Clown,
+            Curly,
+            Fohawk,
+            Hightop,
+            IveLeague,
+            LeftComb,
+            LibertyHawk,
+            LongCut,
+            LowTop,
+            MidCut,
+            PonytailLong,
+            RightComb,
+            ShorthairBangs,
+            SimpleCut,
+            SpikeHawk,
+            Tendrils,
+            TendrilsWPonyTail,
+        }
+
         public DataMap<Characters, GameObject> CharacterModels;
+        public DataMap<HairCuts, GameObject> HaircutModels;
     }
 }

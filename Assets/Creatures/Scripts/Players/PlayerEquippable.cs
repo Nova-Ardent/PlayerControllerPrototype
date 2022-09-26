@@ -15,6 +15,7 @@ namespace Creatures.Player
     {
         [SerializeField] public PlayerModelLoader playerModelLoader;
         [SerializeField] public GameObject characterBody;
+        [SerializeField] public GameObject characterHair;
 
         PlayerModelLoader.Characters currentCharacter = PlayerModelLoader.Characters.Masculine;
         public PlayerModelLoader.Characters CurrentCharacter
@@ -22,9 +23,15 @@ namespace Creatures.Player
             get => currentCharacter;
         }
 
+        PlayerModelLoader.HairCuts currentHair = PlayerModelLoader.HairCuts.Bald;
+        public PlayerModelLoader.HairCuts CurrentHair
+        {
+            get => currentHair;
+        }
+
         public GameObject CharacterBody { get => characterBody; set => characterBody = value; }
         public GameObject CurrentEyebrows { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public GameObject CurrentHair { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public GameObject CharacterHair { get => characterHair; set => characterHair = value; }
 
         public void EquipCharacter(PlayerModelLoader.Characters model)
         {
@@ -34,7 +41,10 @@ namespace Creatures.Player
 
         public void EquipCharacter(GameObject gameObject)
         {
-            GameObject.Destroy(characterBody);
+            if (characterBody != null)
+            {
+                GameObject.Destroy(characterBody);
+            }
             characterBody = Equip(gameObject);
         }
 
@@ -43,9 +53,19 @@ namespace Creatures.Player
             throw new System.NotImplementedException();
         }
 
+        public void EquipHair(PlayerModelLoader.HairCuts model)
+        {
+            currentHair = model;
+            EquipHair(playerModelLoader.HaircutModels[model]);
+        }
+
         public void EquipHair(GameObject gameObject)
         {
-            throw new System.NotImplementedException();
+            if (characterHair != null)
+            {
+                GameObject.Destroy(characterHair);
+            }
+            characterHair = Equip(gameObject);
         }
     }
 }

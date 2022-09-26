@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Objects.Interactable;
 using System.Linq;
+using Creatures.Lockable;
 
 namespace Objects.UI
 {
-    public class CalloutController
+    public class CalloutController : ILockable
     {
         private readonly GameObject calloutBase;
         private readonly ButtonCallout[] callouts;
@@ -14,6 +15,13 @@ namespace Objects.UI
         private readonly Transform calloutTransformBase;
         private readonly Transform target;
         private readonly Transform camera;
+
+        private InteractableObject lockedBy;
+
+        public bool IsLocked
+        {
+            get => lockedBy != null;
+        }
 
         public CalloutController(GameObject calloutBase, ButtonCallout[] callouts, Transform target, Transform camera)
         {
@@ -65,6 +73,33 @@ namespace Objects.UI
             {
                 var callout = this.callouts[i];
                 callout.gameObject.SetActive(false);
+            }
+        }
+
+        public void UnclearCallouts()
+        {
+            for (int i = 0; i < callouts.Length; i++)
+            {
+                var callout = this.callouts[i];
+                callout.gameObject.SetActive(true);
+            }
+        }
+
+        public void Unlock(InteractableObject unlockedBy)
+        {
+            if (unlockedBy == this.lockedBy)
+            {
+                this.lockedBy = null;
+                UnclearCallouts();
+            }
+        }
+
+        public void Lock(InteractableObject lockBy)
+        {
+            if (lockBy is ICanControlCallouts)
+            {
+                this.lockedBy = lockBy;
+                ClearCallouts();
             }
         }
     }

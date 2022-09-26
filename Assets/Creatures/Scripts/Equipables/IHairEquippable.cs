@@ -6,7 +6,7 @@ namespace Creatures.Equippables
 {
     public interface IHairEquippable
     {
-        public GameObject CurrentHair { get; set; }
+        public GameObject CharacterHair { get; set; }
         public void EquipHair(GameObject gameObject);
     }
 }
