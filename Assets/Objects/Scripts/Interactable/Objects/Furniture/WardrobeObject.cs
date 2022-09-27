@@ -128,9 +128,13 @@ namespace Objects.Interactable
                 {
                     case PlayerModelLoader.Characters.Masculine:
                         playerController.PlayerEquippable.EquipCharacter(PlayerModelLoader.Characters.Feminine);
+                        playerController.PlayerEquippable.EquipEyebrows(PlayerModelLoader.Characters.Feminine);
+                        playerController.PlayerEquippable.EquipEyes(PlayerModelLoader.Characters.Feminine);
                         break;
                     case PlayerModelLoader.Characters.Feminine:
                         playerController.PlayerEquippable.EquipCharacter(PlayerModelLoader.Characters.Masculine);
+                        playerController.PlayerEquippable.EquipEyebrows(PlayerModelLoader.Characters.Masculine);
+                        playerController.PlayerEquippable.EquipEyes(PlayerModelLoader.Characters.Masculine);
                         break;
                 }
             }
@@ -171,6 +175,23 @@ namespace Objects.Interactable
                 beardSelectorRing.Deinitialize();
                 mode = Mode.Unfocused;
             }
+            else if (Controller.GetKeyDown(Controller.Controls.ChangeSelectionLeft))
+            {
+                beardSelectorRing.Increment();
+                if (Enum.IsDefined(typeof(PlayerModelLoader.Beards), beardSelectorRing.Index))
+                {
+                    playerController.PlayerEquippable.EquipBeard((PlayerModelLoader.Beards)beardSelectorRing.Index);
+                }
+            }
+            else if (Controller.GetKeyDown(Controller.Controls.ChangeSelectionRight))
+            {
+                beardSelectorRing.Decrement();
+                if (Enum.IsDefined(typeof(PlayerModelLoader.Beards), beardSelectorRing.Index))
+                {
+                    playerController.PlayerEquippable.EquipBeard((PlayerModelLoader.Beards)beardSelectorRing.Index);
+                }
+            }
+            beardSelectorRing.UpdateRotation();
         }
     }
 }

@@ -14,13 +14,13 @@ namespace Objects
         }
 
         bool initialized = false;
-        int circumference = 0;
+        float circumference = 0;
         float radius;
         Quaternion currentRotation;
         GameObject[] selections;
 
         [SerializeField] PositionMode positionMode;
-        [SerializeField] int scale = 1;
+        [SerializeField] float scale = 1;
         [SerializeField] int index = 0;
         [SerializeField] public GameObject[] prefabs;
         [SerializeField] public bool initializeInStart;

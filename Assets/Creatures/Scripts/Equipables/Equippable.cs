@@ -10,6 +10,7 @@ namespace Creatures.Equippables
     {
         [SerializeField] public Transform armatureRoot;
         [SerializeField] public Transform animationRoot;
+        [SerializeField] public Animator animator;
 
         protected GameObject Equip(GameObject prefab)
         {
@@ -41,7 +42,8 @@ namespace Creatures.Equippables
 
                 skinnedMeshRenderer.bones = bones;
             }
-            
+
+            animator.Rebind();
             return equippable;
         }
     }

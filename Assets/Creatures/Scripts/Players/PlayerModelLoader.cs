@@ -38,7 +38,28 @@ namespace Creatures.Player
             TendrilsWPonyTail,
         }
 
+        public enum Beards
+        {
+            Beardless,
+            Anchor,
+            AnchorBottom,
+            Beard,
+            BigBeard,
+            ChinBeard,
+            CircleBeard,
+            FrenchStash,
+            FuManchu,
+            Goatee,
+            Hulihee,
+            PaintersBrush,
+            PencilBeard,
+            PencilStash,
+        }
+
         public DataMap<Characters, GameObject> CharacterModels;
+        public DataMap<Characters, GameObject> CharacterEyebrows;
+        public DataMap<Characters, GameObject> CharacterEyes;
         public DataMap<HairCuts, GameObject> HaircutModels;
+        public DataMap<Beards, GameObject> BeardModels;
     }
 }

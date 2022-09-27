@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace Creatures.Equippables
 {
-    public interface IEyebrowsEquippable
+    public interface IEyebrowsEquippable<T> where T : Enum
     {
-        public GameObject CurrentEyebrows { get; set; }
+        public GameObject CharacterEyebrows { get; set; }
+        public void EquipEyebrows(T gameObject);
         public void EquipEyebrows(GameObject gameObject);
     }
 }
