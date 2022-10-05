@@ -11,7 +11,6 @@ namespace Utilities.Unity
     {
         public const int DEFAULT_INDEX_WIDTH = 18;
         public const int DEFAULT_INDEX_HEIGHT = 18;
-        public const int DEFAULT_PADDING = 20;
 
         public struct Foldout
         {
@@ -32,7 +31,7 @@ namespace Utilities.Unity
         {
             if (started)
             {
-                Debug.LogError("GUI was never ended.");
+                Debug.LogWarning("GUI was never ended.");
             }
 
             started = true;
@@ -97,28 +96,31 @@ namespace Utilities.Unity
             });
         }
 
-        public void Header(string text, int textWidth = -1)
+        public AnimationCurve CurveOption(string name, AnimationCurve curve, Rect range, int textWidth = -1, int graphWidth = -1, int graphHeight = -1)
         {
-            if (textWidth == -1)
+            Header(name, textWidth);
+            if (graphWidth == -1)
             {
-                textWidth = (int)currentPosition.width - DEFAULT_PADDING;
+                graphWidth = (int)(currentPosition.width - textWidth - currentPosition.x);
             }
-            
-            Rect labelPosition = new Rect(currentPosition.x, currentPosition.y, textWidth, currentPosition.height);
 
-            GUIStyle style = new GUIStyle(EditorStyles.label);
-            style.fontStyle = FontStyle.Bold;
+            if (graphHeight == -1)
+            {
+                graphHeight = (int)(currentPosition.width - textWidth - currentPosition.x);
+            }
 
-            EditorGUI.LabelField(labelPosition, text, style);
-            
-            IndexPosition();
+            Rect curveRect = new Rect(currentPosition.x, currentPosition.y, graphWidth, graphHeight);
+            curve = EditorGUI.CurveField(curveRect, curve, Color.green, range);
+            IncreaseHeight(graphHeight);
+
+            return curve;
         }
 
         public E EnumOption<E>(string text, E val, int textWidth = 150, int enumWidth = -1) where E : Enum
         {
             if (enumWidth == -1)
             {
-                enumWidth = (int)(currentPosition.width - textWidth) - DEFAULT_PADDING;
+                enumWidth = (int)(currentPosition.width - textWidth - currentPosition.x);
             }
 
             Rect enumPosition = new Rect(currentPosition.x + textWidth, currentPosition.y, enumWidth, currentPosition.height);
@@ -140,11 +142,28 @@ namespace Utilities.Unity
             return val;
         }
 
-        public float Slider(string text, float value, float min, float max, int textWidth = 150, int sliderWidth = -1)
+        public void Header(string text, int textWidth = -1)
+        {
+            if (textWidth == -1)
+            {
+                textWidth = (int)(currentPosition.width - currentPosition.x);
+            }
+
+            Rect labelPosition = new Rect(currentPosition.x, currentPosition.y, textWidth, currentPosition.height);
+
+            GUIStyle style = new GUIStyle(EditorStyles.label);
+            style.fontStyle = FontStyle.Bold;
+
+            EditorGUI.LabelField(labelPosition, text, style);
+
+            IndexPosition();
+        }
+
+        public float SliderOption(string text, float value, float min, float max, int textWidth = 150, int sliderWidth = -1)
         {
             if (sliderWidth == -1)
             {
-                sliderWidth = (int)(currentPosition.width - textWidth) - DEFAULT_PADDING;
+                sliderWidth = (int)(currentPosition.width - textWidth - currentPosition.x);
             }
 
             Rect sliderPosition = new Rect(currentPosition.x + textWidth, currentPosition.y, sliderWidth, currentPosition.height);
@@ -164,6 +183,26 @@ namespace Utilities.Unity
             return value;
         }
 
+        public Vector3 Vector3Option(string text, Vector3 value, int vectorWidth = -1)
+        {
+            if (vectorWidth == -1)
+            {
+                vectorWidth = (int)(currentPosition.width - currentPosition.x);
+            }
+
+            Rect vectorPosition = new Rect(currentPosition.x, currentPosition.y, vectorWidth, currentPosition.height);
+
+            Vector3 newValue = EditorGUI.Vector3Field(vectorPosition, text, value);
+            if (!newValue.Equals(value))
+            {
+                value = newValue;
+                isDirty = true;
+            }
+            
+            IndexPosition(2);
+            return value;
+        }
+
         public void Space(int space = 1)
         {
             currentPosition = new Rect(currentPosition.x, currentPosition.y + (space * DEFAULT_INDEX_HEIGHT), currentPosition.width, currentPosition.height);
@@ -172,6 +211,11 @@ namespace Utilities.Unity
         public void IndexPosition(int additive = 0)
         {
             currentPosition = new Rect(currentPosition.x, currentPosition.y + DEFAULT_INDEX_HEIGHT + additive, currentPosition.width, currentPosition.height);
+        }
+
+        public void IncreaseHeight(int additive = DEFAULT_INDEX_HEIGHT)
+        {
+            currentPosition = new Rect(currentPosition.x, currentPosition.y + additive, currentPosition.width, currentPosition.height);
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

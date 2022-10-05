@@ -47,7 +47,12 @@ namespace Procedural.Builders
             {
                 Node<Vector3> newNode = new Node<Vector3>();
                 newNode.parent = node;
-                newNode.data = branchGrowthDirector.GeneratePoint(node.data, node.data + NodeDirection(node), random);
+                newNode.data = branchGrowthDirector.GeneratePoint(
+                    node.data,
+                    node.data + NodeDirection(node),
+                    random,
+                    depth,
+                    maxDepth);
 
                 nodes.Add(newNode);
                 node.children[i] = newNode;

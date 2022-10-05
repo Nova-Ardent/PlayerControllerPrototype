@@ -5589,10 +5589,65 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spline:
-    maxDepth: 3
+    maxDepth: 20
     branchGrowthDirector:
       generationMethod: 1
       branchAngle: 8.7
+      trendTowardsData:
+        trendType: 1
+        direction: {x: 0, y: 1, z: 0}
+        fit: -1
+        curveFit:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.9764137
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.18124107
+            value: -0.008472323
+            inSlope: -0.05729575
+            outSlope: -0.05729575
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.51822877
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.5042405
+            value: -0.9861943
+            inSlope: 0.01878996
+            outSlope: 0.01878996
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.7090566
+            value: -0.013111435
+            inSlope: -0.07123587
+            outSlope: -0.07123587
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.40646923
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
 --- !u!4 &1768384451 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6228987091044487832, guid: b868d16f643314343acae36a941e01dd, type: 3}

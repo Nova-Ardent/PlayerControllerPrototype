@@ -20,8 +20,8 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 128
-  GroundedPosition: {x: 0, y: -0.69, z: 0}
-  GroundedRadius: 0.28
+  GroundedPosition: {x: 0, y: -0.72, z: 0}
+  GroundedRadius: 0.235
   GroundedDrawColor: {r: 0, g: 1, b: 0.11986828, a: 1}
   NotGroundedDrawColor: {r: 1, g: 0, b: 0, a: 1}
   JumpAtNormalized: 0.69
