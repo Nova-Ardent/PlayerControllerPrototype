@@ -45,7 +45,7 @@ namespace Objects.UI
 
         public void SetCallouts(params Interaction[] interactions)
         {
-            SetCallouts(interactions.Select<Interaction, (string, Sprite)>(x => new (x.actionString, x.callout)).ToArray());
+            SetCallouts(interactions.Select<Interaction, (string, Sprite)>(x => (x.actionString, x.callout)).ToArray());
         }
 
         public void SetCallouts(params (string, Sprite)[] callouts)
